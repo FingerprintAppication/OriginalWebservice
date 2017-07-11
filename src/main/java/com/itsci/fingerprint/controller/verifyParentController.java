@@ -17,7 +17,7 @@ import com.itsci.fingerprint.model.Parent;
 import com.itsci.fingerprint.model.Person;
 import com.itsci.fingerprint.model.Student;
 import com.itsci.fingerprint.model.Teacher;
-
+//ดีครับ
 @RestController
 public class verifyParentController {
 	StudentManager sm = new StudentManager();
