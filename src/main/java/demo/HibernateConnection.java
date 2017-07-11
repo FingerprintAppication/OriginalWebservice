@@ -7,7 +7,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
 import com.itsci.fingerprint.model.*;
-//ควยไก่ๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆๆ
+
 public class HibernateConnection {
 	public static SessionFactory sessionFactory;
 
