@@ -5,6 +5,7 @@ import java.util.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import com.itsci.fingerprint.model.Enrollment;
 import com.itsci.fingerprint.model.Section;
 import com.itsci.fingerprint.model.Subject;
 import com.itsci.fingerprint.model.Teacher;
@@ -17,7 +18,6 @@ public class ViewListSubjectManager {
 		List<Object> list = new ArrayList<>();
 		try {
 			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
-
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
 			list = session.createQuery("From Teacher where personID='" + personID + "'").list();
@@ -39,24 +39,73 @@ public class ViewListSubjectManager {
 		return type;
 
 	}
-	
-	public List<Section> searchSection(long personID) {
-		List<Section> list = new ArrayList<Section>();
+
+	public List<Subject> searchStudentSubject(long personID) {
+		List<Enrollment> list = new ArrayList<Enrollment>();
 		try {
 			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
-
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
-			list = session.createQuery("From Enrollment where personID='" + personID + "'").list();
+			list = session.createQuery("From Enrollment where student='" + personID + "'").list();
 			session.close();
 
 		} catch (Exception e) {
 			e.getStackTrace();
 
 		}
-		System.out.println(list.toString());
-		
-		return null;
+
+		List<Subject> listSubject = new ArrayList<>();
+		for (Enrollment i : list) {
+			Subject s = i.getSection().getSubject();
+			listSubject.add(s);
+		}
+
+		return listSubject;
 
 	}
+
+	public List<Subject> searchTeacherSubject(String teacherID) {
+		List<Section> list = new ArrayList<Section>();
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			list = session.createQuery("From Section where teacherList='" + teacherID + "'").list();
+			session.close();
+
+		} catch (Exception e) {
+			e.getStackTrace();
+
+		}
+
+		System.out.println("TEST TEACHER : IS " + list.toString());
+		
+		List<Subject> listSubject = new ArrayList<>();
+		for (Section i : list) {
+			Subject s = i.getSubject();
+			listSubject.add(s);
+		}
+
+		return listSubject;
+	}
+	
+	public String searchTeacherID(long personID) {
+		List<Teacher> list = new ArrayList<Teacher>();
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			list = session.createQuery("From Teacher where personID='" + personID + "'").list();
+			session.close();
+
+		} catch (Exception e) {
+			e.getStackTrace();
+
+		}
+
+		System.out.println("TEACGER ID :::::: " + list.get(0).getTeacherID());
+
+		return list.get(0).getTeacherID();
+	}
+
 }

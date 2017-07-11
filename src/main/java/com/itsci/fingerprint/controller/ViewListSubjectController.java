@@ -2,6 +2,7 @@ package com.itsci.fingerprint.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.itsci.fingerprint.manager.ViewListSubjectManager;
+import com.itsci.fingerprint.model.Section;
 import com.itsci.fingerprint.model.Subject;
 
 @RestController
@@ -27,12 +29,14 @@ public class ViewListSubjectController {
 		System.out.println("PERSON ID : " + personID);
 
 		String typePerson = mng.checkPerson(personID);
+		List<Subject> listSubject = new ArrayList<>();
 		if (typePerson.equals("student")) {
-			
+			listSubject = mng.searchStudentSubject(personID);
 		} else if (typePerson.equals("teacher")) {
-
+			String teacherID = mng.searchTeacherID(personID);
+			//listSubject = mng.searchTeacherSubject(teacherID);
 		}
 
-		return null;
+		return listSubject;
 	}
 }
