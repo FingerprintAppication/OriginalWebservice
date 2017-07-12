@@ -65,12 +65,12 @@ public class ViewListSubjectManager {
 	}
 
 	public List<Subject> searchTeacherSubject(String teacherID) {
-		List<Section> list = new ArrayList<Section>();
+		List<Object[]> list = new ArrayList<>();
 		try {
 			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
-			list = session.createQuery("From Section where teacherList='" + teacherID + "'").list();
+			list = session.createQuery("From Section s join s.teacherList t where t.teacherID='" + teacherID + "'").list();
 			session.close();
 
 		} catch (Exception e) {
@@ -78,17 +78,20 @@ public class ViewListSubjectManager {
 
 		}
 
-		System.out.println("TEST TEACHER : IS " + list.toString());
-		
+		System.out.println("OBJECT " + list.toString());
+
 		List<Subject> listSubject = new ArrayList<>();
-		for (Section i : list) {
-			Subject s = i.getSubject();
-			listSubject.add(s);
+
+		for (Object[] o : list) {
+			Object object = o[0];
+			System.out.println(object.toString());
+			Section s = (Section) object;
+			listSubject.add(s.getSubject());
 		}
 
 		return listSubject;
 	}
-	
+
 	public String searchTeacherID(long personID) {
 		List<Teacher> list = new ArrayList<Teacher>();
 		try {

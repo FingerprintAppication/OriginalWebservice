@@ -119,5 +119,14 @@ public class Section implements Serializable {
 		this.teacherList = teacherList;
 	}
 
+	@Override
+	public String toString() {
+		return "Section [sectionID=" + sectionID + ", sectionNumber=" + sectionNumber + ", semester=" + semester
+				+ ", schoolYear=" + schoolYear + ", periodList=" + periodList + ", subject=" + subject
+				+ ", teacherList=" + teacherList + "]";
+	}
+	
+	
+
 }
 

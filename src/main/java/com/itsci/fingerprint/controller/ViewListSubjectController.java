@@ -34,7 +34,7 @@ public class ViewListSubjectController {
 			listSubject = mng.searchStudentSubject(personID);
 		} else if (typePerson.equals("teacher")) {
 			String teacherID = mng.searchTeacherID(personID);
-			//listSubject = mng.searchTeacherSubject(teacherID);
+			listSubject = mng.searchTeacherSubject(teacherID);
 		}
 
 		return listSubject;
