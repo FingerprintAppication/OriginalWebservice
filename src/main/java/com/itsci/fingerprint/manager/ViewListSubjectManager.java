@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.itsci.fingerprint.model.Enrollment;
+import com.itsci.fingerprint.model.Period;
 import com.itsci.fingerprint.model.Section;
 import com.itsci.fingerprint.model.Subject;
 import com.itsci.fingerprint.model.Teacher;
@@ -70,7 +71,8 @@ public class ViewListSubjectManager {
 			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
-			list = session.createQuery("From Section s join s.teacherList t where t.teacherID='" + teacherID + "'").list();
+			list = session.createQuery("From Section s join s.teacherList t where t.teacherID='" + teacherID + "'")
+					.list();
 			session.close();
 
 		} catch (Exception e) {
@@ -84,7 +86,6 @@ public class ViewListSubjectManager {
 
 		for (Object[] o : list) {
 			Object object = o[0];
-			System.out.println(object.toString());
 			Section s = (Section) object;
 			listSubject.add(s.getSubject());
 		}
@@ -106,9 +107,34 @@ public class ViewListSubjectManager {
 
 		}
 
-		System.out.println("TEACGER ID :::::: " + list.get(0).getTeacherID());
+		System.out.println("Teacher ID :: " + list.get(0).getTeacherID());
 
 		return list.get(0).getTeacherID();
+	}
+
+	public List<Section> searchPeriod(long subjectID) {
+		List<Object[]> list = new ArrayList<>();
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			list = session.createQuery("From Section s join s.subject j where j.subjectID='" + subjectID + "'").list();
+			session.close();
+
+		} catch (Exception e) {
+			e.getStackTrace();
+
+		}
+
+		List<Section> listSection = new ArrayList<>();
+		for (Object[] o : list) {
+			Object object = o[0];
+			Section s = (Section) object;
+			listSection.add(s);
+		}
+
+		return listSection;
+
 	}
 
 }
