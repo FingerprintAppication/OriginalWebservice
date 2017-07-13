@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.itsci.fingerprint.model.Enrollment;
+import com.itsci.fingerprint.model.Period;
 import com.itsci.fingerprint.model.Section;
 import com.itsci.fingerprint.model.Subject;
 import com.itsci.fingerprint.model.Teacher;
@@ -65,12 +66,13 @@ public class ViewListSubjectManager {
 	}
 
 	public List<Subject> searchTeacherSubject(String teacherID) {
-		List<Section> list = new ArrayList<Section>();
+		List<Object[]> list = new ArrayList<>();
 		try {
 			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
-			list = session.createQuery("From Section where teacherList='" + teacherID + "'").list();
+			list = session.createQuery("From Section s join s.teacherList t where t.teacherID='" + teacherID + "'")
+					.list();
 			session.close();
 
 		} catch (Exception e) {
@@ -78,17 +80,19 @@ public class ViewListSubjectManager {
 
 		}
 
-		System.out.println("TEST TEACHER : IS " + list.toString());
-		
+		System.out.println("OBJECT " + list.toString());
+
 		List<Subject> listSubject = new ArrayList<>();
-		for (Section i : list) {
-			Subject s = i.getSubject();
-			listSubject.add(s);
+
+		for (Object[] o : list) {
+			Object object = o[0];
+			Section s = (Section) object;
+			listSubject.add(s.getSubject());
 		}
 
 		return listSubject;
 	}
-	
+
 	public String searchTeacherID(long personID) {
 		List<Teacher> list = new ArrayList<Teacher>();
 		try {
@@ -103,9 +107,34 @@ public class ViewListSubjectManager {
 
 		}
 
-		System.out.println("TEACGER ID :::::: " + list.get(0).getTeacherID());
+		System.out.println("Teacher ID :: " + list.get(0).getTeacherID());
 
 		return list.get(0).getTeacherID();
+	}
+
+	public List<Section> searchPeriod(long subjectID) {
+		List<Object[]> list = new ArrayList<>();
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			list = session.createQuery("From Section s join s.subject j where j.subjectID='" + subjectID + "'").list();
+			session.close();
+
+		} catch (Exception e) {
+			e.getStackTrace();
+
+		}
+
+		List<Section> listSection = new ArrayList<>();
+		for (Object[] o : list) {
+			Object object = o[0];
+			Section s = (Section) object;
+			listSection.add(s);
+		}
+
+		return listSection;
+
 	}
 
 }
