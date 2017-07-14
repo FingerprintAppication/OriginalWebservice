@@ -21,7 +21,7 @@ import demo.HibernateConnection;
 public class EnrollmentManager {
 	Enrollment enrollment = null;
 	
-	public Enrollment getHibernateEnrollment(String studentID,String subjectName) {
+	public Enrollment getHibernateEnrollment(String studentID,String subjectNumber,String period) {
 		try {
 			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
 			Session session = sessionFactory.openSession();
@@ -30,7 +30,7 @@ public class EnrollmentManager {
 			Query query = session.createQuery(queryString);
 			query.setParameter("studentID", Long.parseLong(studentID));
 			query.setParameter("sectionNumber", Integer.parseInt("1"));
-			query.setParameter("subjectNumber", subjectName);
+			query.setParameter("subjectNumber", subjectNumber);
 			List<?> listResult = query.list();
 			if (listResult != null && listResult.size() > 0) {
 				enrollment = (Enrollment) listResult.get(0);
@@ -39,7 +39,7 @@ public class EnrollmentManager {
 			Collection<Period> afterFilterPeriod = filterCollectionLong(
 					enrollment.getSection().getPeriodList(), session,
 					"this.periodID = :periodID order by this.periodID asc",
-					"periodID", "40");
+					"periodID", period);
 			
 			
 			enrollment.getSection().getPeriodList().clear();
@@ -49,7 +49,7 @@ public class EnrollmentManager {
 					enrollment.getAttendanceList(),
 					session,
 					"this.schedule.period.periodID = :periodID order by this.attendanceID asc",
-					"periodID", "40");
+					"periodID", period);
 			enrollment.getAttendanceList().clear();
 			enrollment.getAttendanceList().addAll(afterFilterAttendance);
 			session.close();
