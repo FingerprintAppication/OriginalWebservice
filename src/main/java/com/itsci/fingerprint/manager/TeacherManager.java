@@ -12,6 +12,8 @@ import com.itsci.fingerprint.model.Teacher;
 import demo.HibernateConnection;
 
 public class TeacherManager {
+	String resultForFindTeacher = "";
+	
 	public List<Teacher> AllTeacher() {
 		List<Teacher> list = new ArrayList<Teacher>();
 		try {
@@ -29,6 +31,30 @@ public class TeacherManager {
 		
 
 		return list;
+	}
+	
+	
+	public String findByTeacherId(String id) {
+		List<Teacher> list = new ArrayList<Teacher>();
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			list = session.createQuery("From Teacher  where personID="+id).list();
+			session.close();
+			System.out.println("GET IN COMPLETED");
+
+		} catch (Exception s) {
+			s.getStackTrace();
+
+		}
+		if(list.size()!=0){
+			resultForFindTeacher = "teacher";
+		}else{
+			resultForFindTeacher = "";
+		}
+
+		return resultForFindTeacher;
 	}
 
 }
