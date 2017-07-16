@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.itsci.fingerprint.manager.ViewListSubjectManager;
 import com.itsci.fingerprint.model.Period;
 import com.itsci.fingerprint.model.Section;
+import com.itsci.fingerprint.model.Student;
 import com.itsci.fingerprint.model.Subject;
 
 @RestController
@@ -29,13 +30,22 @@ public class ViewListSubjectController {
 		long personID = jsonObject.getLong("personID");
 		System.out.println("PERSON ID : " + personID);
 
-		String typePerson = mng.checkPerson(personID);
+		String typePerson = mng.checkPersonTeacher(personID);
+		
+		if (!typePerson.equals("teacher")){
+			typePerson = mng.checkPersonParent(personID);
+		}
+		
+		
 		List<Subject> listSubject = new ArrayList<>();
-		if (typePerson.equals("student")) {
-			listSubject = mng.searchStudentSubject(personID);
+		if (typePerson.equals("parent")) {
+			List<Student> listStudent = mng.searchParentStudent(personID);
+			System.out.println("GET LIST " + listStudent.get(0).getStudentID());
 		} else if (typePerson.equals("teacher")) {
 			String teacherID = mng.searchTeacherID(personID);
 			listSubject = mng.searchTeacherSubject(teacherID);
+		} else {
+			listSubject = mng.searchStudentSubject(personID);
 		}
 
 		return listSubject;
