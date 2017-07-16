@@ -31,17 +31,10 @@ public class ViewListSubjectController {
 		System.out.println("PERSON ID : " + personID);
 
 		String typePerson = mng.checkPersonTeacher(personID);
-		
-		if (!typePerson.equals("teacher")){
-			typePerson = mng.checkPersonParent(personID);
-		}
-		
-		
+
 		List<Subject> listSubject = new ArrayList<>();
-		if (typePerson.equals("parent")) {
-			List<Student> listStudent = mng.searchParentStudent(personID);
-			System.out.println("GET LIST " + listStudent.get(0).getStudentID());
-		} else if (typePerson.equals("teacher")) {
+
+		if (typePerson.equals("teacher")) {
 			String teacherID = mng.searchTeacherID(personID);
 			listSubject = mng.searchTeacherSubject(teacherID);
 		} else {
@@ -49,6 +42,23 @@ public class ViewListSubjectController {
 		}
 
 		return listSubject;
+	}
+
+	@RequestMapping(value = "/viewListSubject/searchStudentParent", method = RequestMethod.POST)
+	public List<Student> searchStudentParent(@RequestBody String j) throws SQLException, JSONException, IOException {
+		System.out.println("PERSON MODEL " + j);
+
+		JSONObject jsonObject = new JSONObject(j);
+		long personID = jsonObject.getLong("personID");
+		System.out.println("PERSON ID : " + personID);
+
+		List<Student> listStudent = mng.searchParentStudent(personID);
+		for (Student s : listStudent) {
+			System.out.println("Get Student with Parent " + s.getStudentID());
+		}
+		System.out.println("listStudent @@@@" + listStudent.toString());
+
+		return listStudent;
 	}
 
 	@RequestMapping(value = "/viewListSubject/period", method = RequestMethod.POST)

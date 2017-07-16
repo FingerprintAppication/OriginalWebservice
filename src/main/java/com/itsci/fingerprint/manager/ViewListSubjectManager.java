@@ -32,30 +32,11 @@ public class ViewListSubjectManager {
 		}
 		String type = "";
 		if (!list.isEmpty()) {
-			System.out.println("TeacherLogin");
+			System.out.println("Teacher");
 			type = "teacher";
-		}
-		return type;
-
-	}
-
-	public String checkPersonParent(long personID) {
-		List<Object> list = new ArrayList<>();
-		try {
-			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
-			Session session = sessionFactory.openSession();
-			session.beginTransaction();
-			list = session.createQuery("From Parent where personID='" + personID + "'").list();
-			session.close();
-
-		} catch (Exception e) {
-			e.getStackTrace();
-
-		}
-		String type = "";
-		if (!list.isEmpty()) {
-			System.out.println("Teacher ==== > Parent");
-			type = "parent";
+		} else {
+			System.out.println("Student");
+			type = "student";
 		}
 		return type;
 
@@ -67,13 +48,13 @@ public class ViewListSubjectManager {
 			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
-			list = session.createQuery("From Student where parent='6357'").list();
+			list = session.createQuery("From Student where parent='" + parentID + "'").list();
 			session.close();
 
 		} catch (Exception e) {
 			e.getStackTrace();
 		}
-		
+
 		return list;
 
 	}
