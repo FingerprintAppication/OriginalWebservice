@@ -78,4 +78,23 @@ public class StudentManager {
 
 		return student;
 	}
+	
+	public List<Student> findStudentByParentPhone(String phone) {
+		List<Student> list = new ArrayList<Student>();
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			list = session.createQuery("From Student  where parentPhone='" + phone+"'").list();
+			session.close();
+			System.out.println("GET IN COMPLETED");
+
+		} catch (Exception s) {
+			s.getStackTrace();
+			System.out.println(s.getMessage());
+
+		}
+		
+		return list;
+	}
 }

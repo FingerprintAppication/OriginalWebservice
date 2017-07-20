@@ -9,15 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.itsci.fingerprint.manager.LoginManager;
 import com.itsci.fingerprint.manager.ParentManager;
 import com.itsci.fingerprint.manager.PersonManager;
 import com.itsci.fingerprint.manager.StudentManager;
 import com.itsci.fingerprint.manager.TeacherManager;
+import com.itsci.fingerprint.model.Login;
 import com.itsci.fingerprint.model.Parent;
 import com.itsci.fingerprint.model.Person;
 import com.itsci.fingerprint.model.Student;
 import com.itsci.fingerprint.model.Teacher;
-//�դ�Ѻ
+//�դ�Ѻ
 @RestController
 public class verifyParentController {
 	StudentManager sm = new StudentManager();
@@ -27,32 +30,52 @@ public class verifyParentController {
 	Student student;
 	Parent parentNew;
 	Person person;
+	LoginManager lmg;
 	Long lastPerson;
 	
-	@RequestMapping(value= "/student",method = RequestMethod.POST)
-	public Student searchStudent(@RequestBody Student student){
-		System.out.println(student.getParentPhone() +" received");
-		student = sm.searchStudent(student.getStudentID());
-		return student;
-	}
 	
 	@RequestMapping(value= "/verifyparent",method = RequestMethod.POST)
-	public String verifyParent(@RequestBody Parent parent){
-		student = sm.findStudentVerify(parent.getTitle());
-		System.out.println(parent.getTitle() +" findStudent");
-		if(student.getParentPhone() != null){
-			parent.setTitle("");
-			result +=" "+ pm.insertParent(parent);
+	public String verifyParent(@RequestBody Student studentParent){
+		result = null;
+		student = sm.searchStudent(studentParent.getStudentID());
+		
+		if(student.getPersonID()==0){
+			result = "ไม่พบรหัสนักศึกษาในฐานข้อมูล";	
+		}else if (!student.getParentPhone().equals(studentParent.getParent().getPhoneNo())){
+			result = "หมายเลขโทรศัพท์ไม่ตรงกับฐานข้อมูล";
+
+		}else if (null == student.getParent()){
+			parentNew = null;
+			parentNew = studentParent.getParent();
+			pm.insertParent(parentNew);
 			lastPerson = psm.getLastPerson();
-			System.out.println(lastPerson+" last");
-			parent.setPersonID(lastPerson);
-			student.setParent(parent);
-			result +=" "+sm.updateStudentParent(student);
-			System.out.println(result);
+			List<Student> updateStudent = sm.findStudentByParentPhone(parentNew.getPhoneNo());
+			System.out.println("size "+updateStudent.size());
+			for(Student s:updateStudent){
+				parentNew.setPersonID(lastPerson);
+				s.setParent(parentNew);
+				String res = sm.updateStudentParent(s);
+				System.out.println(res +" update students !");
+			}
+			Login login = new Login();
+			Person p = new Person();
+			p.setPersonID(lastPerson);
+			p.setTitle(parentNew.getTitle());
+			p.setFirstName(parentNew.getFirstName());
+			p.setLastName(parentNew.getLastName());
+			login.setPerson(p);
+			login.setUsername(parentNew.getPhoneNo());
+			login.setPassword(parentNew.getPhoneNo());
 			
-		}else{
-			result = "duplicate";
+			lmg = new LoginManager();
+			lmg.saveLogin(login);
+			
+			result = "ลงทะเบียนเสร็จสมบูรณ์  ชื่อผู้ใช้งานและรหัสผ่านคือ หมายเลขโทรศัพท์ของคุณ";
+			
+		}else {
+			result = "รหัสนักศึกษานี้ได้มีการลงทะเบียนแล้ว";
 		}
+	
 		return result;
 	}
 	
