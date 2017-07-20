@@ -6,8 +6,10 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.itsci.fingerprint.model.Enrollment;
+import com.itsci.fingerprint.model.Parent;
 import com.itsci.fingerprint.model.Period;
 import com.itsci.fingerprint.model.Section;
+import com.itsci.fingerprint.model.Student;
 import com.itsci.fingerprint.model.Subject;
 import com.itsci.fingerprint.model.Teacher;
 
@@ -15,7 +17,7 @@ import demo.HibernateConnection;
 
 public class ViewListSubjectManager {
 
-	public String checkPerson(long personID) {
+	public String checkPersonTeacher(long personID) {
 		List<Object> list = new ArrayList<>();
 		try {
 			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
@@ -29,15 +31,31 @@ public class ViewListSubjectManager {
 
 		}
 		String type = "";
-		if (list.isEmpty()) {
-			System.out.println("StudentLogin");
-			type = "student";
-		} else {
-			System.out.println("TeacherLogin");
-			System.out.println(list.toString());
+		if (!list.isEmpty()) {
+			System.out.println("Teacher");
 			type = "teacher";
+		} else {
+			System.out.println("Student");
+			type = "student";
 		}
 		return type;
+
+	}
+
+	public List<Student> searchParentStudent(long parentID) {
+		List<Student> list = new ArrayList<Student>();
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			list = session.createQuery("From Student where parent='" + parentID + "'").list();
+			session.close();
+
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+
+		return list;
 
 	}
 

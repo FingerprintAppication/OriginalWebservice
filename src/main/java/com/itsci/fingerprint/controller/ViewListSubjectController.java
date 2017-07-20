@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.itsci.fingerprint.manager.ViewListSubjectManager;
 import com.itsci.fingerprint.model.Period;
 import com.itsci.fingerprint.model.Section;
+import com.itsci.fingerprint.model.Student;
 import com.itsci.fingerprint.model.Subject;
 
 @RestController
@@ -29,16 +30,35 @@ public class ViewListSubjectController {
 		long personID = jsonObject.getLong("personID");
 		System.out.println("PERSON ID : " + personID);
 
-		String typePerson = mng.checkPerson(personID);
+		String typePerson = mng.checkPersonTeacher(personID);
+
 		List<Subject> listSubject = new ArrayList<>();
-		if (typePerson.equals("student")) {
-			listSubject = mng.searchStudentSubject(personID);
-		} else if (typePerson.equals("teacher")) {
+
+		if (typePerson.equals("teacher")) {
 			String teacherID = mng.searchTeacherID(personID);
 			listSubject = mng.searchTeacherSubject(teacherID);
+		} else {
+			listSubject = mng.searchStudentSubject(personID);
 		}
 
 		return listSubject;
+	}
+
+	@RequestMapping(value = "/viewListSubject/searchStudentParent", method = RequestMethod.POST)
+	public List<Student> searchStudentParent(@RequestBody String j) throws SQLException, JSONException, IOException {
+		System.out.println("PERSON MODEL " + j);
+
+		JSONObject jsonObject = new JSONObject(j);
+		long personID = jsonObject.getLong("personID");
+		System.out.println("PERSON ID : " + personID);
+
+		List<Student> listStudent = mng.searchParentStudent(personID);
+		for (Student s : listStudent) {
+			System.out.println("Get Student with Parent " + s.getStudentID());
+		}
+		System.out.println("listStudent @@@@" + listStudent.toString());
+
+		return listStudent;
 	}
 
 	@RequestMapping(value = "/viewListSubject/period", method = RequestMethod.POST)
