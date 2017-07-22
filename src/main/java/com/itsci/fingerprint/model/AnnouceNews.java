@@ -2,9 +2,12 @@ package com.itsci.fingerprint.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "annoucenews")
@@ -26,6 +29,7 @@ public class AnnouceNews {
 		this.detail = detail;
 	}
 
+	@GeneratedValue
 	public long getAnnouceNewsID() {
 		return annouceNewsID;
 	}
@@ -50,6 +54,7 @@ public class AnnouceNews {
 		this.detail = detail;
 	}
 
+	@Id
 	@ManyToOne(cascade = CascadeType.ALL)
 	public Teacher getTeacher() {
 		return teacher;
@@ -59,6 +64,7 @@ public class AnnouceNews {
 		this.teacher = teacher;
 	}
 
+	@Id
 	@OneToOne(cascade = CascadeType.ALL)
 	public Schedule getSchedule() {
 		return schedule;
@@ -70,6 +76,12 @@ public class AnnouceNews {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	@Override
+	public String toString() {
+		return "AnnouceNews [annouceNewsID=" + annouceNewsID + ", annouceNewsType=" + annouceNewsType + ", detail="
+				+ detail + ", teacher=" + teacher + ", schedule=" + schedule + "]";
 	}
 
 }

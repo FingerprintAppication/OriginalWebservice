@@ -17,15 +17,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.itsci.fingerprint.manager.AnnouceNewsManager;
+import com.itsci.fingerprint.model.AnnouceNews;
 import com.itsci.fingerprint.model.Schedule;
+import com.itsci.fingerprint.model.Teacher;
 
 @RestController
 public class AnnouceNewsController {
+	AnnouceNewsManager mng = new AnnouceNewsManager();
 
-	@RequestMapping(value = "/annouceNews", method = RequestMethod.POST)
+	@RequestMapping(value = "/annouceNews/searchDate", method = RequestMethod.POST)
 	public List<String> VerifyLogin(@RequestBody String j) throws SQLException, JSONException, IOException {
 
-		AnnouceNewsManager mng = new AnnouceNewsManager();
 		System.out.println("Json : " + j);
 
 		JSONObject json = new JSONObject(j);
@@ -54,5 +56,47 @@ public class AnnouceNewsController {
 
 		}
 		return listDate;
+	}
+
+	@RequestMapping(value = "/annouceNews", method = RequestMethod.POST)
+	public String addAnnouceNews(@RequestBody String j) throws SQLException, JSONException, IOException {
+
+		System.out.println("Json : " + j);
+
+		JSONObject json = new JSONObject(j);
+		String newsType = json.getString("annouceNewsType");
+		String detail = json.getString("detail");
+
+		JSONObject teacherJson = json.getJSONObject("teacher");
+		long personID = teacherJson.getLong("personID");
+
+		JSONObject jsonSchedule = json.getJSONObject("schedule");
+		String selectedDate = jsonSchedule.getString("scheduleDate");
+		String[] sp = selectedDate.split("-");
+		String newDate = sp[2] + "-" + sp[1] + "-" + sp[0] + " 00:00:00.0";
+
+		JSONObject jsonPeriod = jsonSchedule.getJSONObject("period");
+		long periodID = jsonPeriod.getLong("periodID");
+
+		System.out.println("newsType + " + newsType);
+		System.out.println("detail + " + detail);
+		System.out.println("newDate + " + newDate);
+		System.out.println("personID + " + personID);
+		System.out.println("periodID + " + periodID);
+
+		Schedule schedule = mng.searchSchedule(periodID, newDate);
+		Teacher teacher = mng.searchTeacher(personID);
+
+		AnnouceNews annouceNews = new AnnouceNews();
+		annouceNews.setAnnouceNewsID(3);
+		annouceNews.setAnnouceNewsType(newsType);
+		annouceNews.setDetail(detail);
+		annouceNews.setSchedule(schedule);
+		annouceNews.setTeacher(teacher);
+		System.out.println(annouceNews.toString());
+		String result = mng.insertAnnouceNews(annouceNews);
+		System.out.println("Result // " + result);
+
+		return result;
 	}
 }
