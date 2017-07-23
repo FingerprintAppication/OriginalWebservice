@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
 import javax.persistence.CascadeType;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,6 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "schedule")
+
 public class Schedule implements Serializable {
 
 	private static final long serialVersionUID = 1L;

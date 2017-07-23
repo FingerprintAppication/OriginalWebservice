@@ -1,10 +1,12 @@
 package com.itsci.fingerprint.model;
 
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "teacher")
+
 public class Teacher extends Person {
 
 	private static final long serialVersionUID = 1L;

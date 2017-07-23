@@ -41,7 +41,8 @@ public class HibernateConnection {
 				.addAnnotatedClass(Student.class)
 				.addAnnotatedClass(Subject.class)
 				.addAnnotatedClass(Teacher.class)
-				.addAnnotatedClass(UpdatedAttendance.class);
+				.addAnnotatedClass(UpdatedAttendance.class)
+				.addAnnotatedClass(AnnouceNews.class);
 
 		StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties());
 		sessionFactory = cfg.buildSessionFactory(ssrb.build());

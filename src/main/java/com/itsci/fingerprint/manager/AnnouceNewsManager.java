@@ -86,6 +86,7 @@ public class AnnouceNewsManager {
 		} catch (Exception s) {
 			s.getStackTrace();
 			result = "can not insert";
+			System.out.println(s.getMessage());
 
 		}
 		return result;

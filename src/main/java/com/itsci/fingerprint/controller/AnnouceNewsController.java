@@ -88,7 +88,6 @@ public class AnnouceNewsController {
 		Teacher teacher = mng.searchTeacher(personID);
 
 		AnnouceNews annouceNews = new AnnouceNews();
-		annouceNews.setAnnouceNewsID(3);
 		annouceNews.setAnnouceNewsType(newsType);
 		annouceNews.setDetail(detail);
 		annouceNews.setSchedule(schedule);
