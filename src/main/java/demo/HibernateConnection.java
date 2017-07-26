@@ -15,8 +15,8 @@ public class HibernateConnection {
 		Properties database = new Properties();
 		database.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
 		database.setProperty("hibernate.connection.username", "root");
-		database.setProperty("hibernate.connection.password", "1234");
-		database.setProperty("hibernate.connection.url","jdbc:mysql://localhost:3306/fingerprint2560?characterEncoding=UTF-8");
+		database.setProperty("hibernate.connection.password", "complete12demon");
+		database.setProperty("hibernate.connection.url","jdbc:mysql://localhost:3307/fingerprint2560?characterEncoding=UTF-8");
 		database.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
 		Configuration cfg = new Configuration().setProperties(database).addPackage("com.itsci.fingerprint.model")
 				.addAnnotatedClass(Attendance.class)
