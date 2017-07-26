@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.util.Date;
 import javax.persistence.CascadeType;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,6 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "schedule")
+
 public class Schedule implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -21,12 +23,12 @@ public class Schedule implements Serializable {
 	private Period period;
 	private Postpone postpone;
 	private Time ddd;
+
 	public Schedule() {
 		super();
 	}
 
-	public Schedule(int scheduleNumber, Date scheduleDate, Period period,
-			Postpone postpone) {
+	public Schedule(int scheduleNumber, Date scheduleDate, Period period, Postpone postpone) {
 		super();
 		this.scheduleNumber = scheduleNumber;
 		this.scheduleDate = scheduleDate;
@@ -90,5 +92,10 @@ public class Schedule implements Serializable {
 		this.postpone = postpone;
 	}
 
-}
+	@Override
+	public String toString() {
+		return "Schedule [scheduleID=" + scheduleID + ", scheduleNumber=" + scheduleNumber + ", scheduleDate="
+				+ scheduleDate + ", period=" + period + ", postpone=" + postpone + ", ddd=" + ddd + "]";
+	}
 
+}

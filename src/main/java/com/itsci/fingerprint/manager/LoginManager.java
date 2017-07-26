@@ -6,8 +6,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.itsci.fingerprint.model.Login;
-import com.itsci.fingerprint.model.Person;
-import com.itsci.fingerprint.model.Student;
 
 import demo.HibernateConnection;
 

@@ -1,6 +1,8 @@
 package com.itsci.fingerprint.model;
 
 import java.io.Serializable;
+
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,6 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "person")
 @Inheritance(strategy = InheritanceType.JOINED)
+
 public class Person implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private long parent;
