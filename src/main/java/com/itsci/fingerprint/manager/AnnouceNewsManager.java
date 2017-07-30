@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.itsci.fingerprint.model.AnnouceNews;
+import com.itsci.fingerprint.model.Attendance;
 import com.itsci.fingerprint.model.Parent;
 import com.itsci.fingerprint.model.Schedule;
 import com.itsci.fingerprint.model.Teacher;
@@ -86,6 +87,62 @@ public class AnnouceNewsManager {
 		} catch (Exception s) {
 			s.getStackTrace();
 			result = "can not insert";
+			System.out.println(s.getMessage());
+
+		}
+		return result;
+	}
+
+	public List<Attendance> SearchAttendanceWithScheduleID(long scheduleID) {
+		List<Attendance> list = new ArrayList<Attendance>();
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			list = session.createQuery("From Attendance where schedule='" + scheduleID + "'").list();
+			session.close();
+
+		} catch (Exception e) {
+			e.getStackTrace();
+
+		}
+
+		return list;
+	}
+	
+	public String updateAttendance(Attendance a) {
+		String result;
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			session.update(a);
+			session.getTransaction().commit();
+			session.close();
+			result = "update success";
+		} catch (Exception s) {
+			s.getStackTrace();
+			result = "can not update";
+			System.out.println(s.getMessage());
+
+		}
+		return result;
+	}
+	
+	public String deleteAnnouceNew(AnnouceNews a) {
+		String result;
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			session.delete(a);
+			session.getTransaction().commit();
+			session.close();
+			result = "delete success";
+		} catch (Exception s) {
+			s.getStackTrace();
+			result = "can not delete";
 			System.out.println(s.getMessage());
 
 		}

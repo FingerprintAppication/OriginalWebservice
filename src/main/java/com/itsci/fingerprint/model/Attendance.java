@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "attendance")
 public class Attendance implements Serializable, Comparable<Attendance> {
-	
+
 	private static final long serialVersionUID = 1L;
 	private long attendanceID;
 	private String status;
@@ -85,7 +85,7 @@ public class Attendance implements Serializable, Comparable<Attendance> {
 			} else {
 				attendance2 += "" + at2.getSchedule().getScheduleNumber();
 			}
-	
+
 			return attendance1.compareTo(attendance2);
 
 		}
@@ -113,4 +113,11 @@ public class Attendance implements Serializable, Comparable<Attendance> {
 	public void setEnrollment(Enrollment enrollment) {
 		this.enrollment = enrollment;
 	}
+
+	@Override
+	public String toString() {
+		return "Attendance [attendanceID=" + attendanceID + ", status=" + status + ", statusDescription="
+				+ statusDescription + ", enrollment=" + enrollment + ", schedule=" + schedule + "]";
+	}
+
 }

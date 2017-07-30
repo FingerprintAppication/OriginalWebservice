@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.itsci.fingerprint.manager.AnnouceNewsManager;
 import com.itsci.fingerprint.model.AnnouceNews;
+import com.itsci.fingerprint.model.Attendance;
 import com.itsci.fingerprint.model.Schedule;
 import com.itsci.fingerprint.model.Teacher;
 
@@ -60,7 +61,6 @@ public class AnnouceNewsController {
 
 	@RequestMapping(value = "/annouceNews", method = RequestMethod.POST)
 	public String addAnnouceNews(@RequestBody String j) throws SQLException, JSONException, IOException {
-
 		System.out.println("Json : " + j);
 
 		JSONObject json = new JSONObject(j);
@@ -78,12 +78,6 @@ public class AnnouceNewsController {
 		JSONObject jsonPeriod = jsonSchedule.getJSONObject("period");
 		long periodID = jsonPeriod.getLong("periodID");
 
-		System.out.println("newsType + " + newsType);
-		System.out.println("detail + " + detail);
-		System.out.println("newDate + " + newDate);
-		System.out.println("personID + " + personID);
-		System.out.println("periodID + " + periodID);
-
 		Schedule schedule = mng.searchSchedule(periodID, newDate);
 		Teacher teacher = mng.searchTeacher(personID);
 
@@ -92,10 +86,31 @@ public class AnnouceNewsController {
 		annouceNews.setDetail(detail);
 		annouceNews.setSchedule(schedule);
 		annouceNews.setTeacher(teacher);
+
 		System.out.println(annouceNews.toString());
 		String result = mng.insertAnnouceNews(annouceNews);
 		System.out.println("Result // " + result);
 
-		return result;
+		if (result.equals("insert success")) {
+			if (newsType.equals("ยกเลิกคาบเรียน")) {
+				System.out.println("cancel attendance with scheduleID : " + schedule.getScheduleID());
+				List<Attendance> list = mng.SearchAttendanceWithScheduleID(schedule.getScheduleID());
+				String resultUpdate = "";
+				for (Attendance a : list) {
+					a.setStatus("ยกเลิก");
+					resultUpdate = mng.updateAttendance(a);
+				}
+
+				if (resultUpdate.equals("update success")) {
+					return "1";
+				} else {
+					System.out.println(mng.deleteAnnouceNew(annouceNews));
+					return "0";
+				}
+			}
+			return "1";
+		}
+
+		return "0";
 	}
 }
