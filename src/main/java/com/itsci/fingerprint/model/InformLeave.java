@@ -28,7 +28,7 @@ public class InformLeave {
 		this.status = status;
 		this.caseDetail = caseDetail;
 	}
-
+	@Id
 	@GeneratedValue
 	public long getInformLeaveID() {
 		return informLeaveID;
