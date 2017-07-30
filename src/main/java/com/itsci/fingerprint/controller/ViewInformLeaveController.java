@@ -61,9 +61,9 @@ public class ViewInformLeaveController {
 		}else{
 			/*********CREATE FOLDER AND SAVE IMAGE*********/
 			String image = inform.getSupportDocument();
-			String subjecFolder = section.getSubject().getSubjectNumber();
-			String nameImageToSave = student.getStudentID()+"#"+subjecFolder+"#"+date+".png";
 			if(image!=null){
+				String subjecFolder = section.getSubject().getSubjectNumber();
+				String nameImageToSave = student.getStudentID()+"#"+subjecFolder+"#"+date+".png";
 				File createFile = new File("C://informleave//"+subjecFolder);
 				if(!createFile.exists()){
 					createFile.mkdirs();
@@ -72,9 +72,9 @@ public class ViewInformLeaveController {
 				BufferedImage imgs = decodeToImage(image);
 				File tmp = new File(createFile.getPath()+"//"+nameImageToSave);
 				ImageIO.write(imgs, "png", tmp);
+				inform.setSupportDocument(nameImageToSave);
 			}
 			/*********INSERT INFORMLEAVE*********/
-			inform.setSupportDocument(nameImageToSave);
 			result = inMa.insertInformLeave(inform);
 			System.out.println(result);
 		}
