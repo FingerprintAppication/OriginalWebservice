@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -31,6 +32,7 @@ public class Period implements Serializable {
 	private String periodEndTime;
 	private Room room;
 	private List<Schedule> scheduleList;
+	private Section section;
 
 	public Period() {
 		super();
@@ -134,5 +136,15 @@ public class Period implements Serializable {
 	public void setScheduleList(List<Schedule> scheduleList) {
 		this.scheduleList = scheduleList;
 	}
+	@Transient
+	public Section getSection() {
+		return section;
+	}
+
+	public void setSection(Section section) {
+		this.section = section;
+	}
+	
+	
 
 }
