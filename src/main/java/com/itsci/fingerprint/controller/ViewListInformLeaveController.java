@@ -51,6 +51,8 @@ public class ViewListInformLeaveController {
 
 			for (InformLeave l : listInform) {
 				Section section = sm.searchSectionByPeriod(l.getSchedule().getPeriod().getPeriodID());
+				section.setPeriodList(null);
+				section.setTeacherList(null);
 				if (section.getSubject().getSubjectName().equals(s.getSubjectName())) {
 					l.getSchedule().getPeriod().setSection(section);
 					l.getSchedule().getPeriod().getSection().setPeriodList(null);
