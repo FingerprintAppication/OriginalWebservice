@@ -48,6 +48,7 @@ public class ViewInformLeaveController {
 	    int month = cal.get(Calendar.MONTH)+1;
 	    int day = cal.get(Calendar.DAY_OF_MONTH);
 	    String date = year+"-"+month+"-"+day;
+	    System.out.println("Date "+date);
 	    /*********DECLARE VARIABLE FOR SEARCH*********/
 	    Long getStudentId = inform.getStudent().getStudentID();
 	    Long getPeriodId = inform.getSchedule().getPeriod().getPeriodID();
@@ -61,7 +62,7 @@ public class ViewInformLeaveController {
 		}else{
 			/*********CREATE FOLDER AND SAVE IMAGE*********/
 			String image = inform.getSupportDocument();
-			if(image!=null){
+			if(image!=""){
 				String subjecFolder = section.getSubject().getSubjectNumber();
 				String nameImageToSave = student.getStudentID()+"#"+subjecFolder+"#"+date+".png";
 				File createFile = new File("C://informleave//"+subjecFolder);
