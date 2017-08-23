@@ -3,13 +3,12 @@ package com.itsci.fingerprint.model;
 import javax.persistence.*;
 
 import org.hibernate.FetchMode;
-
-
+import org.hibernate.annotations.Cascade;
 
 @Entity
 @Table(name = "informleave")
 public class InformLeave {
-
+	private static final long serialVersionUID = 1L;
 	private long informLeaveID;
 	private String informType;
 	private String supportDocument;
@@ -18,6 +17,9 @@ public class InformLeave {
 	private String detail;
 
 	private Schedule schedule;
+	
+	
+	
 	private Student student;
 
 	public InformLeave() {
@@ -31,7 +33,7 @@ public class InformLeave {
 		this.status = status;
 		this.caseDetail = caseDetail;
 	}
-	
+
 	@Id
 	@GeneratedValue
 	public long getInformLeaveID() {
@@ -74,7 +76,7 @@ public class InformLeave {
 		this.caseDetail = caseDetail;
 	}
 
-	@OneToOne(/*cascade = CascadeType.ALL,fetch = FetchType.EAGER*/)
+	@OneToOne(cascade = CascadeType.ALL)
 	public Schedule getSchedule() {
 		return schedule;
 	}
@@ -83,17 +85,15 @@ public class InformLeave {
 		this.schedule = schedule;
 	}
 
-	@ManyToOne(cascade=CascadeType.ALL)
-	//@JoinColumn(name="personID")
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@JoinColumn(name="student_personID")
 	public Student getStudent() {
 		return student;
 	}
-
+	
 	public void setStudent(Student student) {
 		this.student = student;
 	}
-	
-	
 
 	public String getDetail() {
 		return detail;
@@ -103,5 +103,8 @@ public class InformLeave {
 		this.detail = detail;
 	}
 
-	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 }

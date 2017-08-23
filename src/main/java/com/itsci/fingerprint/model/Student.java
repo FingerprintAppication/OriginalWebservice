@@ -18,7 +18,7 @@ public class Student extends Person {
 	
 	private static final long serialVersionUID = 1L;
 	private long studentID;
-	/*private String encodeID;*/
+	private String encodeID;
 	private String parentPhone;// NEW ADD
 	private Parent parent;// NEW ADD
 
@@ -58,14 +58,14 @@ public class Student extends Person {
 		this.studentID = studentID;
 	}
 
-	/*@Transient
+	@Transient
 	public String getEncodeID() {
 		return encodeID;
 	}
 
 	public void setEncodeID(String encodeID) {
 		this.encodeID = encodeID;
-	}*/
+	}
 	
 	
 

@@ -9,6 +9,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.imageio.ImageIO;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,7 +44,6 @@ public class ViewInformLeaveController {
 		sm = new SectionManager();
 		inMa = new InformLeaveManager();
 		System.out.println("LONGID "+inform.getInformLeaveID());
-		//inform.setInformLeaveID();
 		/*********GET DATE TO CALENDAR*********/
 		Calendar cal = Calendar.getInstance();
 	    cal.setTime(inform.getSchedule().getScheduleDate());
@@ -58,8 +59,9 @@ public class ViewInformLeaveController {
 		Schedule scc = scm.searchScheduleByDate(date,getPeriodId);
 		Section section = sm.searchSectionByPeriod(getPeriodId);
 		inform.setSchedule(scc);
-		inform.getStudent().setStudentID(student.getStudentID());
-		inform.getStudent().setPersonID(student.getPersonID());
+		inform.setStudent(student);
+		System.out.println(inform.getStudent().getStudentID()+ " STUID nhaa");
+		
 		if("ลากิจ".equals(inform.getInformType())){
 			result = inMa.insertInformLeave(inform);
 		}else{
@@ -84,7 +86,7 @@ public class ViewInformLeaveController {
 		}
 		
 		
-		if("insert success".equals(result)){
+		if("success".equals(result)){
 			result = "ลาเรียนสำเร็จ";
 		}else{
 			result = "ไม่สามารถลาเรียนได้เนื่องจากท่านได้ลาเรียนวันนี้เเล้ว";
@@ -115,7 +117,7 @@ public class ViewInformLeaveController {
 		inform.setInformType("ลากิจ");
 		inform.setStatus("รอ");
 		inform.setSupportDocument("xxx");
-		
+		//inform.setInformLeaveID(123);
 		//long aaa = 1234;
 		//inform.setInformLeaveID(aaa);
 		Schedule sss = new Schedule();

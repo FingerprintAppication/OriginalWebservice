@@ -19,14 +19,13 @@ public class InformLeaveManager {
 			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
-			informLeave.setInformLeaveID(123456);
 			session.saveOrUpdate(informLeave);
 			session.getTransaction().commit();
 			session.close();
 			result = "success";
 		} catch (Exception s) {
 			s.getStackTrace();
-			System.out.println(s.getMessage()+"\n"+s.getStackTrace().toString());
+			System.out.println(s.getMessage()+"\n"+s.getStackTrace().toString()+"\n"+s.getCause()     );
 			result = "not success";
 
 		}
