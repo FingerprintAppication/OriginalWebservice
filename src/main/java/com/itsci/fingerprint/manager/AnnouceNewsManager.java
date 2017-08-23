@@ -148,5 +148,25 @@ public class AnnouceNewsManager {
 		}
 		return result;
 	}
+	
+	/*new added*/
+	public List<AnnouceNews> getAnnounceNews() {
+		List<AnnouceNews> list = new ArrayList<AnnouceNews>();
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			list = session.createQuery("From AnnouceNews").list();
+			session.close();
+
+		} catch (Exception e) {
+			e.getStackTrace();
+
+		}
+
+		return list;
+
+	}
 
 }
