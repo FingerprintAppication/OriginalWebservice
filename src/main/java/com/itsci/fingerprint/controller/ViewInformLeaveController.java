@@ -41,6 +41,8 @@ public class ViewInformLeaveController {
 		scm = new ScheduleManager(); 
 		sm = new SectionManager();
 		inMa = new InformLeaveManager();
+		System.out.println("LONGID "+inform.getInformLeaveID());
+		//inform.setInformLeaveID();
 		/*********GET DATE TO CALENDAR*********/
 		Calendar cal = Calendar.getInstance();
 	    cal.setTime(inform.getSchedule().getScheduleDate());
@@ -56,7 +58,8 @@ public class ViewInformLeaveController {
 		Schedule scc = scm.searchScheduleByDate(date,getPeriodId);
 		Section section = sm.searchSectionByPeriod(getPeriodId);
 		inform.setSchedule(scc);
-		inform.setStudent(student);
+		inform.getStudent().setStudentID(student.getStudentID());
+		inform.getStudent().setPersonID(student.getPersonID());
 		if("ลากิจ".equals(inform.getInformType())){
 			result = inMa.insertInformLeave(inform);
 		}else{
@@ -104,6 +107,28 @@ public class ViewInformLeaveController {
 			e.printStackTrace();
 		}
 		return image;
+	}
+	
+	@RequestMapping(value="/informleavess",method = RequestMethod.GET)
+	public String testBugs () throws IOException {
+		InformLeave inform = new InformLeave();
+		inform.setInformType("ลากิจ");
+		inform.setStatus("รอ");
+		inform.setSupportDocument("xxx");
+		
+		//long aaa = 1234;
+		//inform.setInformLeaveID(aaa);
+		Schedule sss = new Schedule();
+		sss.setScheduleID(1403);
+		inform.setSchedule(sss);
+		//inform.setInformType("okkk");
+		Student ddd =new Student();
+		ddd.setPersonID(3433);
+		
+		inform.setStudent(ddd);
+		inMa = new InformLeaveManager();
+		result = inMa.insertInformLeave(inform);
+		return result;
 	}
 
 }

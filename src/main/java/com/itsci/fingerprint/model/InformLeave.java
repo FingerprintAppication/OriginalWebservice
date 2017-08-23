@@ -2,23 +2,26 @@ package com.itsci.fingerprint.model;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.Cascade;
+import org.hibernate.FetchMode;
+
+
 
 @Entity
-@Table(name = "informLeave")
+@Table(name = "informleave")
 public class InformLeave {
 
-	private static final long serialVersionUID = 1L;
 	private long informLeaveID;
 	private String informType;
 	private String supportDocument;
 	private String status;
 	private String caseDetail;
+	private String detail;
 
 	private Schedule schedule;
 	private Student student;
 
 	public InformLeave() {
+		super();
 	}
 
 	public InformLeave(int informLeaveID, String informType, String supportDocument, String status, String caseDetail) {
@@ -28,6 +31,7 @@ public class InformLeave {
 		this.status = status;
 		this.caseDetail = caseDetail;
 	}
+	
 	@Id
 	@GeneratedValue
 	public long getInformLeaveID() {
@@ -70,7 +74,7 @@ public class InformLeave {
 		this.caseDetail = caseDetail;
 	}
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(/*cascade = CascadeType.ALL,fetch = FetchType.EAGER*/)
 	public Schedule getSchedule() {
 		return schedule;
 	}
@@ -79,7 +83,8 @@ public class InformLeave {
 		this.schedule = schedule;
 	}
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade=CascadeType.ALL)
+	//@JoinColumn(name="personID")
 	public Student getStudent() {
 		return student;
 	}
@@ -87,8 +92,16 @@ public class InformLeave {
 	public void setStudent(Student student) {
 		this.student = student;
 	}
+	
+	
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public String getDetail() {
+		return detail;
 	}
+
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+
+	
 }
