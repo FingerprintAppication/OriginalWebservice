@@ -1,7 +1,5 @@
 package com.itsci.fingerprint.model;
 
-
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -21,7 +19,7 @@ import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "section")
-public class Section implements Serializable {
+public class Section {
 
 	private static final long serialVersionUID = 1L;
 	private long sectionID;
@@ -36,8 +34,7 @@ public class Section implements Serializable {
 		super();
 	}
 
-	public Section(int sectionNumber, int semester, int schoolYear,
-			Subject subject) {
+	public Section(int sectionNumber, int semester, int schoolYear, Subject subject) {
 		super();
 		this.sectionNumber = sectionNumber;
 		this.semester = semester;
@@ -45,8 +42,7 @@ public class Section implements Serializable {
 		this.subject = subject;
 	}
 
-	public Section(long sectionID, int sectionNumber, int semester,
-			int schoolYear, Subject subject) {
+	public Section(long sectionID, int sectionNumber, int semester, int schoolYear, Subject subject) {
 		super();
 		this.sectionID = sectionID;
 		this.sectionNumber = sectionNumber;
@@ -125,8 +121,5 @@ public class Section implements Serializable {
 				+ ", schoolYear=" + schoolYear + ", periodList=" + periodList + ", subject=" + subject
 				+ ", teacherList=" + teacherList + "]";
 	}
-	
-	
 
 }
-

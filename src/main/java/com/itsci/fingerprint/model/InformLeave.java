@@ -1,11 +1,11 @@
 package com.itsci.fingerprint.model;
 
+import java.io.Serializable;
+
 import javax.persistence.*;
 
-import org.hibernate.annotations.Cascade;
-
 @Entity
-@Table(name = "informLeave")
+@Table(name = "informleave")
 public class InformLeave {
 
 	private static final long serialVersionUID = 1L;
@@ -14,20 +14,13 @@ public class InformLeave {
 	private String supportDocument;
 	private String status;
 	private String caseDetail;
-
+	private String detail;
 	private Schedule schedule;
 	private Student student;
 
 	public InformLeave() {
 	}
 
-	public InformLeave(int informLeaveID, String informType, String supportDocument, String status, String caseDetail) {
-		this.informLeaveID = informLeaveID;
-		this.informType = informType;
-		this.supportDocument = supportDocument;
-		this.status = status;
-		this.caseDetail = caseDetail;
-	}
 	@Id
 	@GeneratedValue
 	public long getInformLeaveID() {
@@ -91,4 +84,20 @@ public class InformLeave {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	public String getDetail() {
+		return detail;
+	}
+
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+
+	@Override
+	public String toString() {
+		return "InformLeave [informLeaveID=" + informLeaveID + ", informType=" + informType + ", supportDocument="
+				+ supportDocument + ", status=" + status + ", caseDetail=" + caseDetail + ", detail=" + detail
+				+ ", schedule=" + schedule + ", student=" + student + "]";
+	}
+
 }

@@ -21,7 +21,7 @@ public class InformLeaveManager {
 			result = "insert success";
 		} catch (Exception s) {
 			s.getStackTrace();
-			System.out.println(s.getMessage());
+			System.out.println("GG "+ s.getMessage());
 			result = "can not insert";
 
 		}
