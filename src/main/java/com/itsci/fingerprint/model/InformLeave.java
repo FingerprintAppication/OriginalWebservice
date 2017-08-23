@@ -1,9 +1,18 @@
 package com.itsci.fingerprint.model;
 
-import javax.persistence.*;
+import java.io.Serializable;
 
+<<<<<<< HEAD
+import javax.persistence.*;
+=======
 import org.hibernate.FetchMode;
+<<<<<<< HEAD
 import org.hibernate.annotations.Cascade;
+=======
+
+
+>>>>>>> 0dc3ca579a8ca9eaa734e2bd0426fc6a234b476d
+>>>>>>> 3b920a0e536f3a5dd89527803d4086377402a830
 
 @Entity
 @Table(name = "informleave")
@@ -15,7 +24,10 @@ public class InformLeave {
 	private String status;
 	private String caseDetail;
 	private String detail;
+<<<<<<< HEAD
+=======
 
+>>>>>>> 0dc3ca579a8ca9eaa734e2bd0426fc6a234b476d
 	private Schedule schedule;
 	
 	
@@ -26,6 +38,8 @@ public class InformLeave {
 		super();
 	}
 
+<<<<<<< HEAD
+=======
 	public InformLeave(int informLeaveID, String informType, String supportDocument, String status, String caseDetail) {
 		this.informLeaveID = informLeaveID;
 		this.informType = informType;
@@ -33,7 +47,12 @@ public class InformLeave {
 		this.status = status;
 		this.caseDetail = caseDetail;
 	}
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 0dc3ca579a8ca9eaa734e2bd0426fc6a234b476d
+>>>>>>> 3b920a0e536f3a5dd89527803d4086377402a830
 	@Id
 	@GeneratedValue
 	public long getInformLeaveID() {
@@ -99,12 +118,33 @@ public class InformLeave {
 		return detail;
 	}
 
+<<<<<<< HEAD
+	public String getDetail() {
+		return detail;
+	}
+
+=======
+>>>>>>> 0dc3ca579a8ca9eaa734e2bd0426fc6a234b476d
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
 
+<<<<<<< HEAD
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
+=======
+<<<<<<< HEAD
+	@Override
+	public String toString() {
+		return "InformLeave [informLeaveID=" + informLeaveID + ", informType=" + informType + ", supportDocument="
+				+ supportDocument + ", status=" + status + ", caseDetail=" + caseDetail + ", detail=" + detail
+				+ ", schedule=" + schedule + ", student=" + student + "]";
+	}
+
+=======
+	
+>>>>>>> 0dc3ca579a8ca9eaa734e2bd0426fc6a234b476d
+>>>>>>> 3b920a0e536f3a5dd89527803d4086377402a830
 }

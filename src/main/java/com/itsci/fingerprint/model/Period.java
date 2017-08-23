@@ -136,6 +136,7 @@ public class Period implements Serializable {
 	public void setScheduleList(List<Schedule> scheduleList) {
 		this.scheduleList = scheduleList;
 	}
+	
 	@Transient
 	public Section getSection() {
 		return section;
@@ -144,6 +145,15 @@ public class Period implements Serializable {
 	public void setSection(Section section) {
 		this.section = section;
 	}
+
+	@Override
+	public String toString() {
+		return "Period [periodID=" + periodID + ", dayOfWeek=" + dayOfWeek + ", studyType=" + studyType
+				+ ", comingTime=" + comingTime + ", lateTime=" + lateTime + ", absentTime=" + absentTime
+				+ ", periodStartTime=" + periodStartTime + ", periodEndTime=" + periodEndTime + ", room=" + room
+				+ ", scheduleList=" + scheduleList + ", section=" + section + "]";
+	}
+	
 	
 	
 

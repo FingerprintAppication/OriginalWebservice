@@ -23,14 +23,17 @@ public class SectionManager {
 			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
-			list = session.createQuery("From Section sc join sc.periodList l where l.periodID ="+period).list();
+			list = session.createQuery("From Section sc join sc.periodList l where l.periodID ='" + period + "'")
+					.list();
 			if (list != null && list.size() > 0) {
 				Object object = list.get(0)[0];
 				section = (Section) object;
+			} else {
+				System.out.println("error Section");
 			}
 			session.getTransaction().commit();
 			session.close();
-			System.out.println("GET IN COMPLETED");
+			System.out.println("GET IN COMPLETED Section");
 
 		} catch (Exception s) {
 			s.getStackTrace();
@@ -38,5 +41,5 @@ public class SectionManager {
 		}
 		return section;
 	}
-	
+
 }
