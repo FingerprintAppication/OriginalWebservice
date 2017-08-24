@@ -2,6 +2,8 @@ package com.itsci.fingerprint.controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,12 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.itsci.fingerprint.manager.LoginManager;
 import com.itsci.fingerprint.model.Login;
 import com.itsci.fingerprint.model.Person;
+import com.itsci.fingerprint.model.Subject;
 
 @RestController
 public class LoginController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public Login VerifyLogin(@RequestBody String j) throws SQLException, JSONException, IOException {
+	public Map<String, List<String>> VerifyLogin(@RequestBody String j)
+			throws SQLException, JSONException, IOException {
+		Map<String, List<String>> map = new HashMap<String, List<String>>();
 
 		LoginManager mng = new LoginManager();
 		System.out.println("Json : " + j);
@@ -30,14 +35,59 @@ public class LoginController {
 		String password = json.getString("password");
 
 		List<Login> login = mng.searchLogin(username, password);
+		List<String> listLogin = new ArrayList<>();
+
+		listLogin.add(login.get(0).getUsername());
+		listLogin.add(login.get(0).getPassword());
+		listLogin.add(login.get(0).getPerson().getTitle());
+		listLogin.add(login.get(0).getPerson().getFirstName());
+		listLogin.add(login.get(0).getPerson().getLastName());
+		listLogin.add("" + login.get(0).getPerson().getPersonID());
 
 		if (login.size() != 0) {
 			System.out.println("Login Success");
-			return login.get(0);
+			long personID = login.get(0).getPerson().getPersonID();
+
+			String typePerson = mng.checkPersonTeacher(personID);
+			List<Subject> listSubject = new ArrayList<>();
+			List<String> listSubNumber = new ArrayList<>();
+
+			if (typePerson.equals("teacher")) {
+				String teacherID = mng.searchTeacherID(personID);
+				listSubject = mng.searchTeacherSubject(teacherID);
+				listLogin.add(login.get(0).getPerson().getMajor().getMajorName());
+				listLogin.add(login.get(0).getPerson().getMajor().getFaculty().getFacultyName());
+				listLogin.add("teacher");
+			} else {
+				if (login.get(0).getPerson().getFingerprintData() == null) {
+					listLogin.add(null);
+					listLogin.add(null);
+					listLogin.add("parent");
+				} else {
+					listSubject = mng.searchStudentSubject(personID);
+					listLogin.add(login.get(0).getPerson().getMajor().getMajorName());
+					listLogin.add(login.get(0).getPerson().getMajor().getFaculty().getFacultyName());
+					listLogin.add("student");
+					listLogin.add("" + login.get(0).getPerson().getFingerprintData().getFingerprintNumber());
+				}
+			}
+
+			for (Subject i : listSubject) {
+				listSubNumber.add(i.getSubjectNumber());
+			}
+
+			map.put("login", listLogin);
+			map.put("subject", listSubNumber);
+
+			System.out.println("login" + listLogin);
+			System.out.println("subject" + listSubNumber);
+			System.out.println(map);
+
+			return map;
 		}
-		
+
 		System.out.println("Invalid login");
-		Login invalid = new Login();
+		Map<String, List<String>> invalid = new HashMap<String, List<String>>();
 		return invalid;
 	}
 }
