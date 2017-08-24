@@ -25,14 +25,20 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.itsci.fingerprint.fcm.AndroidPushNotificationsService;
 import com.itsci.fingerprint.manager.AnnouceNewsManager;
+import com.itsci.fingerprint.manager.SubjectManager;
+import com.itsci.fingerprint.manager.TopicManager;
 import com.itsci.fingerprint.model.AnnouceNews;
 import com.itsci.fingerprint.model.Attendance;
 import com.itsci.fingerprint.model.Schedule;
+import com.itsci.fingerprint.model.Section;
+import com.itsci.fingerprint.model.Subject;
 import com.itsci.fingerprint.model.Teacher;
+import com.itsci.fingerprint.model.Topic;
 
 @RestController
 public class AnnouceNewsController {
 	AnnouceNewsManager mng = new AnnouceNewsManager();
+	TopicManager tm = new TopicManager();
 	
 	@Autowired
 	AndroidPushNotificationsService androidPushNotificationsService/*=new AndroidPushNotificationsService()*/;
@@ -97,12 +103,15 @@ public class AnnouceNewsController {
 		annouceNews.setDetail(detail);
 		annouceNews.setSchedule(schedule);
 		annouceNews.setTeacher(teacher);
-
-		System.out.println(annouceNews.toString());
+		Section section = mng.searchSectionByPeriod(annouceNews.getSchedule().getPeriod().getPeriodID());
+		
+		System.out.println(section.getSubject().getSubjectNumber()+" "+section.getSubject().getSubjectName());
 		String result = mng.insertAnnouceNews(annouceNews);
 		System.out.println("Result // " + result);
-
+		
 		if (result.equals("insert success")) {
+			String topicName = compareSubjectToEnglish (section.getSubject().getSubjectNumber());
+			setJSONData(topicName,section.getSubject().getSubjectName(),annouceNews.getDetail());
 			if (newsType.equals("ยกเลิกคาบเรียน")) {
 				System.out.println("cancel attendance with scheduleID : " + schedule.getScheduleID());
 				List<Attendance> list = mng.SearchAttendanceWithScheduleID(schedule.getScheduleID());
@@ -126,8 +135,9 @@ public class AnnouceNewsController {
 	}
 //test controller
 	@RequestMapping(value = "/FCM", method = RequestMethod.GET)
-	public ResponseEntity<String> testPostFCM () {
-		return setJSONData("news","ขลำคีย์ผิด วุ้ววว","Hello firebase cloud messaging!");	
+	public String testPostFCM () {
+		return compareSubjectToEnglish("ทส341");
+		//return setJSONData("news","ขลำคีย์ผิด วุ้ววว","Hello firebase cloud messaging!");	
 	}
 	
 //	set json data
@@ -162,5 +172,19 @@ public class AnnouceNewsController {
 			e.printStackTrace();
 		}
 		return new ResponseEntity<>("Push Notification ERROR!", HttpStatus.BAD_REQUEST);
+	}
+	
+	public String compareSubjectToEnglish (String sub) {
+		String subject = "";
+		List<Topic> listSubject = tm.getAllTopic();
+		System.out.println("compared! "+listSubject.size());
+		for(Topic t:listSubject){
+			if(t.getSubject().getSubjectNumber().equalsIgnoreCase(sub)){
+				subject = t.getTopicName();
+				System.out.println("compared!");
+				break;
+			}
+		}
+		return subject;
 	}
 }

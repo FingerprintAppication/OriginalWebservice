@@ -34,13 +34,14 @@ public class ViewInformLeaveController {
 	SectionManager sm;
 	InformLeaveManager inMa;
 	String result = "";
-
-	@RequestMapping(value = "/informleave", method = RequestMethod.POST)
-	public String getInformLeave(@RequestBody InformLeave inform) throws IOException {
+	
+	@RequestMapping(value="/informleave",method = RequestMethod.POST)
+	public String getInformLeave (@RequestBody InformLeave inform) throws IOException {
 		stm = new StudentManager();
-		scm = new ScheduleManager();
+		scm = new ScheduleManager(); 
 		sm = new SectionManager();
 		inMa = new InformLeaveManager();
+<<<<<<< HEAD
 
 		/********* GET DATE TO CALENDAR *********/
 		Calendar cal = Calendar.getInstance();
@@ -74,38 +75,64 @@ public class ViewInformLeaveController {
 		inform.getStudent().setPersonID(student.getPersonID());
 
 		if ("ลากิจ".equals(inform.getInformType())) {
+=======
+		System.out.println("LONGID "+inform.getInformLeaveID());
+		//inform.setInformLeaveID();
+		/*********GET DATE TO CALENDAR*********/
+		Calendar cal = Calendar.getInstance();
+	    cal.setTime(inform.getSchedule().getScheduleDate());
+	    int year = cal.get(Calendar.YEAR);
+	    int month = cal.get(Calendar.MONTH)+1;
+	    int day = cal.get(Calendar.DAY_OF_MONTH);
+	    String date = year+"-"+month+"-"+day;
+	    System.out.println("Date "+date);
+	    /*********DECLARE VARIABLE FOR SEARCH*********/
+	    Long getStudentId = inform.getStudent().getStudentID();
+	    Long getPeriodId = inform.getSchedule().getPeriod().getPeriodID();
+		Student student = stm.searchStudent(getStudentId);
+		Schedule scc = scm.searchScheduleByDate(date,getPeriodId);
+		Section section = sm.searchSectionByPeriod(getPeriodId);
+		inform.setSchedule(scc);
+		inform.setStudent(student);
+		if("ลากิจ".equals(inform.getInformType())){
+>>>>>>> b943cfde45ac8d2b3423b598917f6096d2a7314e
 			result = inMa.insertInformLeave(inform);
-		} else {
-			/********* CREATE FOLDER AND SAVE IMAGE *********/
+		}else{
+			/*********CREATE FOLDER AND SAVE IMAGE*********/
 			String image = inform.getSupportDocument();
+<<<<<<< HEAD
 
 			if (image != "") {
+=======
+			if(image!=""){
+>>>>>>> b943cfde45ac8d2b3423b598917f6096d2a7314e
 				String subjecFolder = section.getSubject().getSubjectNumber();
-				String nameImageToSave = student.getStudentID() + "#" + subjecFolder + "#" + date + ".png";
-				File createFile = new File("C://informleave//" + subjecFolder);
-				if (!createFile.exists()) {
+				String nameImageToSave = student.getStudentID()+"#"+subjecFolder+"#"+date+".png";
+				File createFile = new File("C://informleave//"+subjecFolder);
+				if(!createFile.exists()){
 					createFile.mkdirs();
 					createFile.getParentFile().createNewFile();
 				}
 				BufferedImage imgs = decodeToImage(image);
-				File tmp = new File(createFile.getPath() + "//" + nameImageToSave);
+				File tmp = new File(createFile.getPath()+"//"+nameImageToSave);
 				ImageIO.write(imgs, "png", tmp);
 				inform.setSupportDocument(nameImageToSave);
 			}
-			/********* INSERT INFORMLEAVE *********/
+			/*********INSERT INFORMLEAVE*********/
 			result = inMa.insertInformLeave(inform);
 			System.out.println(result);
 		}
-
-		if ("insert success".equals(result)) {
+		
+		
+		if("success".equals(result)){
 			result = "ลาเรียนสำเร็จ";
-		} else {
+		}else{
 			result = "ไม่สามารถลาเรียนได้เนื่องจากท่านได้ลาเรียนวันนี้เเล้ว";
 		}
-
+		
 		return result;
 	}
-
+	
 	public static BufferedImage decodeToImage(String imageString) {
 
 		BufferedImage image = null;

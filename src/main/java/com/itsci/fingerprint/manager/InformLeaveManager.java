@@ -19,14 +19,13 @@ public class InformLeaveManager {
 			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
-			informLeave.setInformLeaveID(123456);
 			session.saveOrUpdate(informLeave);
 			session.getTransaction().commit();
 			session.close();
 			result = "success";
 		} catch (Exception s) {
 			s.getStackTrace();
-			System.out.println(s.getMessage()+"\n"+s.getStackTrace().toString());
+			System.out.println(s.getMessage()+"\n"+s.getStackTrace().toString()+"\n"+s.getCause()     );
 			result = "not success";
 
 		}
@@ -44,14 +43,8 @@ public class InformLeaveManager {
 			result = "success";
 		} catch (Exception s) {
 			s.getStackTrace();
-<<<<<<< HEAD
-			System.out.println("GG "+ s.getMessage());
-			result = "can not insert";
-=======
 			System.out.println(s.getMessage());
 			result = "not success";
->>>>>>> 0dc3ca579a8ca9eaa734e2bd0426fc6a234b476d
-
 		}
 		return result;
 	}

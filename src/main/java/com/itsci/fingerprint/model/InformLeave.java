@@ -2,28 +2,19 @@ package com.itsci.fingerprint.model;
 
 import java.io.Serializable;
 
-<<<<<<< HEAD
 import javax.persistence.*;
-=======
-import org.hibernate.FetchMode;
 
-
->>>>>>> 0dc3ca579a8ca9eaa734e2bd0426fc6a234b476d
 
 @Entity
 @Table(name = "informleave")
 public class InformLeave {
-
+	private static final long serialVersionUID = 1L;
 	private long informLeaveID;
 	private String informType;
 	private String supportDocument;
 	private String status;
 	private String caseDetail;
 	private String detail;
-<<<<<<< HEAD
-=======
-
->>>>>>> 0dc3ca579a8ca9eaa734e2bd0426fc6a234b476d
 	private Schedule schedule;
 	private Student student;
 
@@ -31,8 +22,6 @@ public class InformLeave {
 		super();
 	}
 
-<<<<<<< HEAD
-=======
 	public InformLeave(int informLeaveID, String informType, String supportDocument, String status, String caseDetail) {
 		this.informLeaveID = informLeaveID;
 		this.informType = informType;
@@ -40,8 +29,7 @@ public class InformLeave {
 		this.status = status;
 		this.caseDetail = caseDetail;
 	}
-	
->>>>>>> 0dc3ca579a8ca9eaa734e2bd0426fc6a234b476d
+
 	@Id
 	@GeneratedValue
 	public long getInformLeaveID() {
@@ -84,7 +72,7 @@ public class InformLeave {
 		this.caseDetail = caseDetail;
 	}
 
-	@OneToOne(/*cascade = CascadeType.ALL,fetch = FetchType.EAGER*/)
+	@OneToOne(cascade = CascadeType.ALL)
 	public Schedule getSchedule() {
 		return schedule;
 	}
@@ -93,34 +81,29 @@ public class InformLeave {
 		this.schedule = schedule;
 	}
 
-	@ManyToOne(cascade=CascadeType.ALL)
-	//@JoinColumn(name="personID")
+	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@JoinColumn(name="student_personID")
 	public Student getStudent() {
 		return student;
 	}
-
+	
 	public void setStudent(Student student) {
 		this.student = student;
 	}
-	
-	
 
 	public String getDetail() {
 		return detail;
 	}
 
-<<<<<<< HEAD
-	public String getDetail() {
-		return detail;
-	}
-
-=======
->>>>>>> 0dc3ca579a8ca9eaa734e2bd0426fc6a234b476d
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
 
-<<<<<<< HEAD
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	@Override
 	public String toString() {
 		return "InformLeave [informLeaveID=" + informLeaveID + ", informType=" + informType + ", supportDocument="
@@ -128,7 +111,4 @@ public class InformLeave {
 				+ ", schedule=" + schedule + ", student=" + student + "]";
 	}
 
-=======
-	
->>>>>>> 0dc3ca579a8ca9eaa734e2bd0426fc6a234b476d
 }
