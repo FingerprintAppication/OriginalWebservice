@@ -41,8 +41,9 @@ public class ViewInformLeaveController {
 		scm = new ScheduleManager(); 
 		sm = new SectionManager();
 		inMa = new InformLeaveManager();
-<<<<<<< HEAD
 
+		System.out.println("LONGID "+inform.getInformLeaveID());
+		//inform.setInformLeaveID();
 		/********* GET DATE TO CALENDAR *********/
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(inform.getSchedule().getScheduleDate());
@@ -52,40 +53,6 @@ public class ViewInformLeaveController {
 		String date = (year - 543) + "-" + month + "-" + day;
 		System.out.println("date " + date);
 
-		/********* DECLARE VARIABLE FOR SEARCH *********/
-		Long getStudentId = inform.getStudent().getStudentID();
-		Long getPeriodId = inform.getSchedule().getPeriod().getPeriodID();
-
-		System.out.println("LONGID " + inform.getInformLeaveID());
-		// inform.setInformLeaveID();
-
-		Student student = stm.searchStudent(getStudentId);
-		Schedule scc = scm.searchScheduleByDate(date, getPeriodId);
-		System.out.println("searchScheduleByDate " + scc.getScheduleID());
-
-		Section section = sm.searchSectionByPeriod(getPeriodId);
-		System.out.println(section.getSectionID());
-
-		inform.setSchedule(scc);
-
-		inform.setStudent(student);
-		System.out.println(inform.toString());
-
-		inform.getStudent().setStudentID(student.getStudentID());
-		inform.getStudent().setPersonID(student.getPersonID());
-
-		if ("ลากิจ".equals(inform.getInformType())) {
-=======
-		System.out.println("LONGID "+inform.getInformLeaveID());
-		//inform.setInformLeaveID();
-		/*********GET DATE TO CALENDAR*********/
-		Calendar cal = Calendar.getInstance();
-	    cal.setTime(inform.getSchedule().getScheduleDate());
-	    int year = cal.get(Calendar.YEAR);
-	    int month = cal.get(Calendar.MONTH)+1;
-	    int day = cal.get(Calendar.DAY_OF_MONTH);
-	    String date = year+"-"+month+"-"+day;
-	    System.out.println("Date "+date);
 	    /*********DECLARE VARIABLE FOR SEARCH*********/
 	    Long getStudentId = inform.getStudent().getStudentID();
 	    Long getPeriodId = inform.getSchedule().getPeriod().getPeriodID();
@@ -95,17 +62,13 @@ public class ViewInformLeaveController {
 		inform.setSchedule(scc);
 		inform.setStudent(student);
 		if("ลากิจ".equals(inform.getInformType())){
->>>>>>> b943cfde45ac8d2b3423b598917f6096d2a7314e
+
 			result = inMa.insertInformLeave(inform);
 		}else{
 			/*********CREATE FOLDER AND SAVE IMAGE*********/
 			String image = inform.getSupportDocument();
-<<<<<<< HEAD
-
-			if (image != "") {
-=======
 			if(image!=""){
->>>>>>> b943cfde45ac8d2b3423b598917f6096d2a7314e
+
 				String subjecFolder = section.getSubject().getSubjectNumber();
 				String nameImageToSave = student.getStudentID()+"#"+subjecFolder+"#"+date+".png";
 				File createFile = new File("C://informleave//"+subjecFolder);
