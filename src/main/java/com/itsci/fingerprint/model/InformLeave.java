@@ -81,7 +81,7 @@ public class InformLeave {
 		this.schedule = schedule;
 	}
 
-	@ManyToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="student_personID")
 	public Student getStudent() {
 		return student;

@@ -35,9 +35,9 @@ public class ViewListInformLeaveController {
 		Long id = Long.parseLong(personId);
 		// String typePerson = mng.checkPersonTeacher(id);
 
-		List<Subject> listSubject = new ArrayList<>();
+		
 		String teacherID = mng.searchTeacherID(id);
-		listSubject = mng.searchTeacherSubject(teacherID);
+		List<Subject> listSubject = mng.searchTeacherSubject(teacherID);
 		List<InformLeave> listInform = vimg.searchListInformLeave();
 		List<InformLeave> newList = new ArrayList<>();
 		for (InformLeave i : listInform) {
@@ -79,6 +79,7 @@ public class ViewListInformLeaveController {
 			}
 
 		}
+		System.out.println("size inform = "+newList.size());
 		return newList/* listInform */;
 	}
 
