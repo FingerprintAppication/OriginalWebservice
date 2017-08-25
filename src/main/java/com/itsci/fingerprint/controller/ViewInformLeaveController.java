@@ -43,6 +43,8 @@ public class ViewInformLeaveController {
 		inMa = new InformLeaveManager();
 
 		System.out.println("LONGID "+inform.getInformLeaveID());
+		System.out.println("PERIOD  "+inform.getSchedule().getPeriod().getPeriodID());
+		
 		//inform.setInformLeaveID();
 		/********* GET DATE TO CALENDAR *********/
 		Calendar cal = Calendar.getInstance();
@@ -50,7 +52,7 @@ public class ViewInformLeaveController {
 		int year = cal.get(Calendar.YEAR);
 		int month = cal.get(Calendar.MONTH) + 1;
 		int day = cal.get(Calendar.DAY_OF_MONTH);
-		String date = (year - 543) + "-" + month + "-" + day;
+		String date = year  + "-" + month + "-" + day;
 		System.out.println("date " + date);
 
 	    /*********DECLARE VARIABLE FOR SEARCH*********/

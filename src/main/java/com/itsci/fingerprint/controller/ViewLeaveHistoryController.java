@@ -1,10 +1,18 @@
 package com.itsci.fingerprint.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
+import org.apache.tomcat.util.codec.binary.Base64;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,6 +48,22 @@ public class ViewLeaveHistoryController {
 			
 			i.getSchedule().getPeriod().setSection(section);
 			System.out.println(i.toString());
+			if (!"".equals(i.getSupportDocument())) {
+				try {
+					File file = new File("C:/informleave/"+i.getSchedule().getPeriod().getSection()
+							.getSubject().getSubjectNumber()+"/"+i.getSupportDocument());
+					InputStream is = new FileInputStream(file);
+					BufferedImage img = ImageIO.read(is);
+					ByteArrayOutputStream bao = new ByteArrayOutputStream();
+					ImageIO.write(img, "png", bao);
+					String en64 = Base64.encodeBase64String(bao.toByteArray());
+					i.setSupportDocument(en64);
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 		
 		return list;

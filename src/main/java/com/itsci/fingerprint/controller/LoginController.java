@@ -15,13 +15,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.itsci.fingerprint.manager.LoginManager;
+import com.itsci.fingerprint.manager.TopicManager;
 import com.itsci.fingerprint.model.Login;
 import com.itsci.fingerprint.model.Person;
 import com.itsci.fingerprint.model.Subject;
+import com.itsci.fingerprint.model.Topic;
 
 @RestController
 public class LoginController {
-
+	TopicManager tm = new TopicManager();
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public Map<String, List<String>> VerifyLogin(@RequestBody String j)
 			throws SQLException, JSONException, IOException {
@@ -73,7 +76,8 @@ public class LoginController {
 			}
 
 			for (Subject i : listSubject) {
-				listSubNumber.add(i.getSubjectNumber());
+				String subjectTopic = compareSubjectToEnglish(i.getSubjectNumber());
+				listSubNumber.add(subjectTopic);
 			}
 
 			map.put("login", listLogin);
@@ -89,5 +93,19 @@ public class LoginController {
 		System.out.println("Invalid login");
 		Map<String, List<String>> invalid = new HashMap<String, List<String>>();
 		return invalid;
+	}
+	
+	public String compareSubjectToEnglish (String sub) {
+		String subject = "";
+		List<Topic> listSubject = tm.getAllTopic();
+		System.out.println("compared! "+listSubject.size());
+		for(Topic t:listSubject){
+			if(t.getSubject().getSubjectNumber().equalsIgnoreCase(sub)){
+				subject = t.getTopicName();
+				System.out.println("compared!");
+				break;
+			}
+		}
+		return subject;
 	}
 }
