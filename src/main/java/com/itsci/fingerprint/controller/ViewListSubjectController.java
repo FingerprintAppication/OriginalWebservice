@@ -31,7 +31,6 @@ public class ViewListSubjectController {
 		System.out.println("PERSON ID : " + personID);
 
 		String typePerson = mng.checkPersonTeacher(personID);
-
 		List<Subject> listSubject = new ArrayList<>();
 
 		if (typePerson.equals("teacher")) {

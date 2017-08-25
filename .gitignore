@@ -28,3 +28,6 @@ src/main/java/demo/HibernateConnection.java
 src/main/java/demo/HibernateConnection.java
 *.java
 src/main/java/demo/HibernateConnection.java
+src/main/java/com/itsci/fingerprint/model/InformLeave.java
+*.java
+src/main/java/com/itsci/fingerprint/model/InformLeave.java
