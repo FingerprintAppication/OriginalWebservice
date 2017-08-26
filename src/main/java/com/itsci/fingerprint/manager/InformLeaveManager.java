@@ -2,14 +2,9 @@ package com.itsci.fingerprint.manager;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-
 import com.itsci.fingerprint.model.InformLeave;
-import com.itsci.fingerprint.model.Login;
-import com.itsci.fingerprint.model.Parent;
-
 import demo.HibernateConnection;
 
 public class InformLeaveManager {
@@ -65,6 +60,25 @@ public class InformLeaveManager {
 		}
 		
 		return list.get(0);
+
+	}
+	
+	public List<InformLeave> searchDuplicateInformLeave(String personID, String scheduleID) {
+		List<InformLeave> list = new ArrayList<InformLeave>();
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			list = session.createQuery("From InformLeave as im where im.schedule.scheduleID="+scheduleID+" and im.student.personID="+personID).list();
+			session.close();
+
+		} catch (Exception e) {
+			e.getStackTrace();
+
+		}
+		
+		return list;
 
 	}
 

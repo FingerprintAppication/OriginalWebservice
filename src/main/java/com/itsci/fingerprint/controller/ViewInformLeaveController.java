@@ -4,18 +4,13 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Calendar;
-import java.util.Date;
-
+import java.util.List;
 import javax.imageio.ImageIO;
-
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.itsci.fingerprint.manager.InformLeaveManager;
 import com.itsci.fingerprint.manager.ScheduleManager;
 import com.itsci.fingerprint.manager.SectionManager;
@@ -24,28 +19,18 @@ import com.itsci.fingerprint.model.InformLeave;
 import com.itsci.fingerprint.model.Schedule;
 import com.itsci.fingerprint.model.Section;
 import com.itsci.fingerprint.model.Student;
-
 import Decoder.BASE64Decoder;
 
 @RestController
 public class ViewInformLeaveController {
-	StudentManager stm;
-	ScheduleManager scm;
-	SectionManager sm;
-	InformLeaveManager inMa;
+	StudentManager stm = new StudentManager();;
+	ScheduleManager scm = new ScheduleManager();
+	SectionManager sm = new SectionManager();
+	InformLeaveManager inMa = new InformLeaveManager();
 	String result = "";
 	
 	@RequestMapping(value="/informleave",method = RequestMethod.POST)
 	public String getInformLeave (@RequestBody InformLeave inform) throws IOException {
-		stm = new StudentManager();
-		scm = new ScheduleManager(); 
-		sm = new SectionManager();
-		inMa = new InformLeaveManager();
-
-		System.out.println("LONGID "+inform.getInformLeaveID());
-		System.out.println("PERIOD  "+inform.getSchedule().getPeriod().getPeriodID());
-		
-		//inform.setInformLeaveID();
 		/********* GET DATE TO CALENDAR *********/
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(inform.getSchedule().getScheduleDate());
@@ -54,17 +39,21 @@ public class ViewInformLeaveController {
 		int day = cal.get(Calendar.DAY_OF_MONTH);
 		String date = year  + "-" + month + "-" + day;
 		System.out.println("date " + date);
-
+		
 	    /*********DECLARE VARIABLE FOR SEARCH*********/
 	    Long getStudentId = inform.getStudent().getStudentID();
 	    Long getPeriodId = inform.getSchedule().getPeriod().getPeriodID();
 		Student student = stm.searchStudent(getStudentId);
 		Schedule scc = scm.searchScheduleByDate(date,getPeriodId);
 		Section section = sm.searchSectionByPeriod(getPeriodId);
+		/*********check duplicated*********/
+		List<InformLeave> duplicated = inMa.searchDuplicateInformLeave(""+student.getPersonID(),""+scc.getScheduleID());
+		if(duplicated.size()!=0){
+			return "ไม่สามารถลาเรียนได้เนื่องจากท่านได้ลาเรียนวันนี้เเล้ว";
+		}
 		inform.setSchedule(scc);
 		inform.setStudent(student);
 		if("ลากิจ".equals(inform.getInformType())){
-
 			result = inMa.insertInformLeave(inform);
 		}else{
 			/*********CREATE FOLDER AND SAVE IMAGE*********/
@@ -112,28 +101,6 @@ public class ViewInformLeaveController {
 			e.printStackTrace();
 		}
 		return image;
-	}
-
-	@RequestMapping(value = "/informleavess", method = RequestMethod.GET)
-	public String testBugs() throws IOException {
-		InformLeave inform = new InformLeave();
-		inform.setInformType("ลากิจ");
-		inform.setStatus("รอ");
-		inform.setSupportDocument("xxx");
-
-		// long aaa = 1234;
-		// inform.setInformLeaveID(aaa);
-		Schedule sss = new Schedule();
-		sss.setScheduleID(1403);
-		inform.setSchedule(sss);
-		// inform.setInformType("okkk");
-		Student ddd = new Student();
-		ddd.setPersonID(3433);
-
-		inform.setStudent(ddd);
-		inMa = new InformLeaveManager();
-		result = inMa.insertInformLeave(inform);
-		return result;
 	}
 
 }
