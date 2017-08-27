@@ -60,7 +60,7 @@ public class ViewListSubjectController {
 		return listStudent;
 	}
 
-	@RequestMapping(value = "/viewListSubject/period", method = RequestMethod.POST)
+	@RequestMapping(value = "/viewListSubject/section", method = RequestMethod.POST)
 	public List<Section> searchPeriod(@RequestBody String j) throws SQLException, JSONException, IOException {
 
 		JSONObject jsonObject = new JSONObject(j);
