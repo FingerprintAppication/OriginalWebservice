@@ -41,6 +41,9 @@ public class verifyParentController {
 		
 		if(student.getPersonID()==0){
 			result = "ไม่พบรหัสนักศึกษาในฐานข้อมูล";	
+		}else if(student.getParentPhone() == null){
+			result = "ไม่มีหมายเลขโทรศัพท์ในฐานข้อมูล";
+		
 		}else if (!student.getParentPhone().equals(studentParent.getParent().getPhoneNo())){
 			result = "หมายเลขโทรศัพท์ไม่ตรงกับฐานข้อมูล";
 
