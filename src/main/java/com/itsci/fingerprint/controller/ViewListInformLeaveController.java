@@ -38,6 +38,9 @@ public class ViewListInformLeaveController {
 		
 		String teacherID = mng.searchTeacherID(id);
 		List<Subject> listSubject = mng.searchTeacherSubject(teacherID);
+		/*for(Subject ss:listSubject){
+			System.out.println(ss.getSubjectName()+" sub!!!");
+		}*/
 		List<InformLeave> listInform = vimg.searchListInformLeave();
 		List<InformLeave> newList = new ArrayList<>();
 		for (InformLeave i : listInform) {

@@ -111,7 +111,8 @@ public class AnnouceNewsController {
 		
 		if (result.equals("insert success")) {
 			String topicName = compareSubjectToEnglish (section.getSubject().getSubjectNumber());
-			setJSONData(topicName,section.getSubject().getSubjectName(),annouceNews.getDetail());
+			String teacherAnnounce = annouceNews.getTeacher().getFirstName()+" "+annouceNews.getTeacher().getLastName();
+			setJSONData(topicName,section.getSubject().getSubjectNumber() +" "+ section.getSubject().getSubjectName(),"ผู้ประกาศข่าว : "+teacherAnnounce+" \n"+annouceNews.getDetail());
 			if (newsType.equals("ยกเลิกคาบเรียน")) {
 				System.out.println("cancel attendance with scheduleID : " + schedule.getScheduleID());
 				List<Attendance> list = mng.SearchAttendanceWithScheduleID(schedule.getScheduleID());
