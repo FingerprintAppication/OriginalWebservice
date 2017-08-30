@@ -54,6 +54,7 @@ public class ViewListSubjectController {
 		List<Student> listStudent = mng.searchParentStudent(personID);
 		for (Student s : listStudent) {
 			System.out.println("Get Student with Parent " + s.getStudentID());
+			s.setFingerprintData(null);
 		}
 		System.out.println("listStudent @@@@" + listStudent.toString());
 

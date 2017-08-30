@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -39,10 +40,14 @@ import com.itsci.fingerprint.model.Topic;
 public class AnnouceNewsController {
 	AnnouceNewsManager mng = new AnnouceNewsManager();
 	TopicManager tm = new TopicManager();
-	
+
 	@Autowired
-	AndroidPushNotificationsService androidPushNotificationsService/*=new AndroidPushNotificationsService()*/;
-	
+	AndroidPushNotificationsService androidPushNotificationsService/*
+																	 * =new
+																	 * AndroidPushNotificationsService
+																	 * ()
+																	 */;
+
 	@RequestMapping(value = "/annouceNews/searchDate", method = RequestMethod.POST)
 	public List<String> VerifyLogin(@RequestBody String j) throws SQLException, JSONException, IOException {
 
@@ -103,16 +108,27 @@ public class AnnouceNewsController {
 		annouceNews.setDetail(detail);
 		annouceNews.setSchedule(schedule);
 		annouceNews.setTeacher(teacher);
-		Section section = mng.searchSectionByPeriod(annouceNews.getSchedule().getPeriod().getPeriodID());
+
+		Calendar now = Calendar.getInstance();
+		now.set(Calendar.HOUR_OF_DAY, 0);  
+		now.set(Calendar.MINUTE, 0);  
+		now.set(Calendar.SECOND, 0);  
+		now.set(Calendar.MILLISECOND, 0);  
+		annouceNews.setAnnouceDate(now.getTime());
 		
-		System.out.println(section.getSubject().getSubjectNumber()+" "+section.getSubject().getSubjectName());
+		Section section = mng.searchSectionByPeriod(annouceNews.getSchedule().getPeriod().getPeriodID());
+
+		System.out.println(section.getSubject().getSubjectNumber() + " " + section.getSubject().getSubjectName());
 		String result = mng.insertAnnouceNews(annouceNews);
 		System.out.println("Result // " + result);
-		
+
 		if (result.equals("insert success")) {
-			String topicName = compareSubjectToEnglish (section.getSubject().getSubjectNumber());
-			String teacherAnnounce = annouceNews.getTeacher().getFirstName()+" "+annouceNews.getTeacher().getLastName();
-			setJSONData(topicName,section.getSubject().getSubjectNumber() +" "+ section.getSubject().getSubjectName(),"ผู้ประกาศข่าว : "+teacherAnnounce+" \n"+annouceNews.getDetail());
+			String topicName = compareSubjectToEnglish(section.getSubject().getSubjectNumber());
+			String teacherAnnounce = annouceNews.getTeacher().getFirstName() + " "
+					+ annouceNews.getTeacher().getLastName();
+			setJSONData(topicName,
+					section.getSubject().getSubjectNumber() + " " + section.getSubject().getSubjectName(),
+					"ผู้ประกาศข่าว : " + teacherAnnounce + " \n" + annouceNews.getDetail());
 			if (newsType.equals("ยกเลิกคาบเรียน")) {
 				System.out.println("cancel attendance with scheduleID : " + schedule.getScheduleID());
 				List<Attendance> list = mng.SearchAttendanceWithScheduleID(schedule.getScheduleID());
@@ -134,15 +150,17 @@ public class AnnouceNewsController {
 
 		return "0";
 	}
-//test controller
+
+	// test controller
 	@RequestMapping(value = "/FCM", method = RequestMethod.GET)
-	public String testPostFCM () {
-		//return compareSubjectToEnglish("ทส341");
-		return setJSONData("Special_Topic_IN_Information_Technology","ขลำคีย์ผิด วุ้ววว","Hello firebase cloud messaging!")+"";	
+	public String testPostFCM() {
+		// return compareSubjectToEnglish("ทส341");
+		return setJSONData("Special_Topic_IN_Information_Technology", "ขลำคีย์ผิด วุ้ววว",
+				"Hello firebase cloud messaging!") + "";
 	}
-	
-//	set json data
-	public ResponseEntity<String> setJSONData (String TOPIC,String title,String message) {
+
+	// set json data
+	public ResponseEntity<String> setJSONData(String TOPIC, String title, String message) {
 		JSONObject body = new JSONObject();
 		try {
 			body.put("to", "/topics/" + TOPIC);
@@ -155,17 +173,15 @@ public class AnnouceNewsController {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
-		//HttpEntity<String> request = new HttpEntity<>(body.toString());
-		
+		// HttpEntity<String> request = new HttpEntity<>(body.toString());
 
-		
 		try {
 			CompletableFuture<String> pushNotification = androidPushNotificationsService.send(body.toString());
 			CompletableFuture.allOf(pushNotification).join();
 
 			String firebaseResponse = pushNotification.get();
-			//System.out.println(firebaseResponse+" Response!");
-			System.out.println(body+" Response!");
+			// System.out.println(firebaseResponse+" Response!");
+			System.out.println(body + " Response!");
 			return new ResponseEntity<>(firebaseResponse, HttpStatus.OK);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -174,13 +190,13 @@ public class AnnouceNewsController {
 		}
 		return new ResponseEntity<>("Push Notification ERROR!", HttpStatus.BAD_REQUEST);
 	}
-	
-	public String compareSubjectToEnglish (String sub) {
+
+	public String compareSubjectToEnglish(String sub) {
 		String subject = "";
 		List<Topic> listSubject = tm.getAllTopic();
-		System.out.println("compared! "+listSubject.size());
-		for(Topic t:listSubject){
-			if(t.getSubject().getSubjectNumber().equalsIgnoreCase(sub)){
+		System.out.println("compared! " + listSubject.size());
+		for (Topic t : listSubject) {
+			if (t.getSubject().getSubjectNumber().equalsIgnoreCase(sub)) {
 				subject = t.getTopicName();
 				System.out.println("compared!");
 				break;

@@ -1,5 +1,7 @@
 package com.itsci.fingerprint.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +18,7 @@ public class AnnouceNews {
 	private long annouceNewsID;
 	private String annouceNewsType;
 	private String detail;
+	private Date annouceDate;
 	private Teacher teacher;
 	private Schedule schedule;
 
@@ -26,6 +29,14 @@ public class AnnouceNews {
 		this.annouceNewsID = annouceNewsID;
 		this.annouceNewsType = annouceNewsType;
 		this.detail = detail;
+	}
+
+	public Date getAnnouceDate() {
+		return annouceDate;
+	}
+
+	public void setAnnouceDate(Date annouceDate) {
+		this.annouceDate = annouceDate;
 	}
 
 	@Id
