@@ -59,7 +59,7 @@ public class ViewListInformLeaveController {
 				if (section.getSubject().getSubjectName().equals(s.getSubjectName())) {
 					l.getSchedule().getPeriod().setSection(section);
 					l.getSchedule().getPeriod().getSection().setPeriodList(null);
-					if (!"".equals(l.getSupportDocument())) {
+					if (null != l.getSupportDocument()) {
 						try {
 							File file = new File("C:/informleave/"+l.getSchedule().getPeriod().getSection()
 									.getSubject().getSubjectNumber()+"/"+l.getSupportDocument());

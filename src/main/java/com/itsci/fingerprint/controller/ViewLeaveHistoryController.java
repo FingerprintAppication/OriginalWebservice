@@ -48,7 +48,7 @@ public class ViewLeaveHistoryController {
 			
 			i.getSchedule().getPeriod().setSection(section);
 			System.out.println(i.toString());
-			if (!"".equals(i.getSupportDocument())) {
+			if (!"".equals(i.getSupportDocument()) || !(null ==i.getSupportDocument()) ) {
 				try {
 					File file = new File("C:/informleave/"+i.getSchedule().getPeriod().getSection()
 							.getSubject().getSubjectNumber()+"/"+i.getSupportDocument());
