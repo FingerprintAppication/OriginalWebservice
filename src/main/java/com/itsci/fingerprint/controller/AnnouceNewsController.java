@@ -137,8 +137,8 @@ public class AnnouceNewsController {
 //test controller
 	@RequestMapping(value = "/FCM", method = RequestMethod.GET)
 	public String testPostFCM () {
-		return compareSubjectToEnglish("ทส341");
-		//return setJSONData("news","ขลำคีย์ผิด วุ้ววว","Hello firebase cloud messaging!");	
+		//return compareSubjectToEnglish("ทส341");
+		return setJSONData("Special_Topic_IN_Information_Technology","ขลำคีย์ผิด วุ้ววว","Hello firebase cloud messaging!")+"";	
 	}
 	
 //	set json data
