@@ -100,6 +100,7 @@ public class ViewLeaveHistoryController {
 			File tmp = new File(createFile.getPath()+"//"+nameImageToSave);
 			ImageIO.write(imgs, "png", tmp);
 			informLeave.setSupportDocument(nameImageToSave);
+			informLeave.setStatus("รอ");
 			return mng.updateInformLeave(informLeave);
 		}
 		return "not success";
