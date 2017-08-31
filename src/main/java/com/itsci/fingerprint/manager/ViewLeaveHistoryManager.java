@@ -13,7 +13,7 @@ import com.itsci.fingerprint.model.Section;
 import demo.HibernateConnection;
 
 public class ViewLeaveHistoryManager {
-
+	String result = "";
 	public List<InformLeave> searchInformLeave(long personID) {
 		List<InformLeave> list = new ArrayList<InformLeave>();
 		try {
@@ -64,5 +64,40 @@ public class ViewLeaveHistoryManager {
 		}
 		return section;
 	}
+	
+	
+	public InformLeave searchInformLeaveByInformID(long informId) {
+		List<InformLeave> list = new ArrayList<InformLeave>();
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			list = session.createQuery("From InformLeave where informleaveID='" + informId + "'").list();
+			session.close();
+		} catch (Exception e) {
+			e.getStackTrace();
+		}
+		return list.get(0);
+
+	}
+	
+	public String updateInformLeave(InformLeave informLeave) {
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			session.update(informLeave);
+			session.getTransaction().commit();
+			session.close();
+			result = "success";
+		} catch (Exception s) {
+			s.getStackTrace();
+			System.out.println(s.getMessage()+"\n"+s.getStackTrace().toString()+"\n"+s.getCause()     );
+			result = "not success";
+
+		}
+		return result;
+	}
+	
 
 }

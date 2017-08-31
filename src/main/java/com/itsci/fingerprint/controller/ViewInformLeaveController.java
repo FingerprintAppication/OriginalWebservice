@@ -26,6 +26,7 @@ import com.itsci.fingerprint.manager.InformLeaveManager;
 import com.itsci.fingerprint.manager.ScheduleManager;
 import com.itsci.fingerprint.manager.SectionManager;
 import com.itsci.fingerprint.manager.StudentManager;
+import com.itsci.fingerprint.model.Base64Model;
 import com.itsci.fingerprint.model.InformLeave;
 import com.itsci.fingerprint.model.Schedule;
 import com.itsci.fingerprint.model.Section;
@@ -39,6 +40,7 @@ public class ViewInformLeaveController {
 	SectionManager sm = new SectionManager();
 	InformLeaveManager inMa = new InformLeaveManager();
 	String result = "";
+	Base64Model base = new Base64Model();
 	
 	@RequestMapping(value="/informleave",method = RequestMethod.POST)
 	public String getInformLeave (@RequestBody InformLeave inform) throws IOException {
@@ -69,7 +71,7 @@ public class ViewInformLeaveController {
 		}else{
 			/*********CREATE FOLDER AND SAVE IMAGE*********/
 			String image = inform.getSupportDocument();
-			if(image!=""){
+			if(image!=null){
 
 				String subjecFolder = section.getSubject().getSubjectNumber();
 				String nameImageToSave = student.getStudentID()+"#"+subjecFolder+"#"+date+".png";
@@ -78,7 +80,7 @@ public class ViewInformLeaveController {
 					createFile.mkdirs();
 					createFile.getParentFile().createNewFile();
 				}
-				BufferedImage imgs = decodeToImage(image);
+				BufferedImage imgs = Base64Model.decodeToImage(image);
 				File tmp = new File(createFile.getPath()+"//"+nameImageToSave);
 				ImageIO.write(imgs, "png", tmp);
 				inform.setSupportDocument(nameImageToSave);
@@ -119,21 +121,6 @@ public class ViewInformLeaveController {
 		return listDate;
 	}
 	
-	public static BufferedImage decodeToImage(String imageString) {
-
-		BufferedImage image = null;
-		byte[] imageByte;
-		try {
-			BASE64Decoder decoder = new BASE64Decoder();
-			imageByte = decoder.decodeBuffer(imageString);
-			ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
-			image = ImageIO.read(bis);
-			bis.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return image;
-	}
 	
 	
 

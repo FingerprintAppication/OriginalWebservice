@@ -35,3 +35,4 @@ src/main/java/com/itsci/fingerprint/controller/ViewInformLeaveController.java
 src/main/java/com/itsci/fingerprint/model/InformLeave.java
 src/main/java/demo/HibernateConnection.java
 src/main/java/demo/HibernateConnection.java
+src/main/java/demo/HibernateConnection.java
