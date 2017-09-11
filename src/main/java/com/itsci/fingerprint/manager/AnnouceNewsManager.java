@@ -55,6 +55,23 @@ public class AnnouceNewsManager {
 
 	}
 
+	public List<AnnouceNews> getAllAnnouceNews() {
+		List<AnnouceNews> list = new ArrayList<AnnouceNews>();
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			list = session.createQuery("From AnnouceNews").list();
+			session.close();
+
+		} catch (Exception e) {
+			e.getStackTrace();
+
+		}
+
+		return list;
+	}
+
 	public Schedule searchSchedule(long periodID, String date) {
 		List<Schedule> list = new ArrayList<Schedule>();
 		try {
@@ -111,7 +128,7 @@ public class AnnouceNewsManager {
 
 		return list;
 	}
-	
+
 	public String updateAttendance(Attendance a) {
 		String result;
 		try {
@@ -130,8 +147,8 @@ public class AnnouceNewsManager {
 		}
 		return result;
 	}
-	
-	public String deleteAnnouceNew(AnnouceNews a) {
+
+	public String deleteAnnouceNews(AnnouceNews a) {
 		String result;
 		try {
 			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
@@ -149,8 +166,8 @@ public class AnnouceNewsManager {
 		}
 		return result;
 	}
-	
-	/*new added*/
+
+	/* new added */
 	public List<AnnouceNews> getAnnounceNews() {
 		List<AnnouceNews> list = new ArrayList<AnnouceNews>();
 		try {
@@ -169,7 +186,7 @@ public class AnnouceNewsManager {
 		return list;
 
 	}
-	
+
 	public Section searchSectionByPeriod(Long period) {
 		List<Object[]> list = new ArrayList<Object[]>();
 		Section section = new Section();
@@ -177,7 +194,7 @@ public class AnnouceNewsManager {
 			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
 			Session session = sessionFactory.openSession();
 			session.beginTransaction();
-			list = session.createQuery("From Section sc join sc.periodList l where l.periodID ="+period).list();
+			list = session.createQuery("From Section sc join sc.periodList l where l.periodID =" + period).list();
 			if (list != null && list.size() > 0) {
 				Object object = list.get(0)[0];
 				section = (Section) object;

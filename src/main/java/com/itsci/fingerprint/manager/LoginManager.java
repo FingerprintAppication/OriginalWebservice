@@ -28,7 +28,6 @@ public class LoginManager {
 
 		} catch (Exception e) {
 			e.getStackTrace();
-
 		}
 
 		return list;

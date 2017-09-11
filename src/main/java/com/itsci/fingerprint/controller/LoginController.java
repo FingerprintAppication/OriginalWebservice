@@ -24,7 +24,7 @@ import com.itsci.fingerprint.model.Topic;
 @RestController
 public class LoginController {
 	TopicManager tm = new TopicManager();
-	
+
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public Map<String, List<String>> VerifyLogin(@RequestBody String j)
 			throws SQLException, JSONException, IOException {
@@ -40,15 +40,16 @@ public class LoginController {
 		List<Login> login = mng.searchLogin(username, password);
 		List<String> listLogin = new ArrayList<>();
 
-		listLogin.add(login.get(0).getUsername());
-		listLogin.add(login.get(0).getPassword());
-		listLogin.add(login.get(0).getPerson().getTitle());
-		listLogin.add(login.get(0).getPerson().getFirstName());
-		listLogin.add(login.get(0).getPerson().getLastName());
-		listLogin.add("" + login.get(0).getPerson().getPersonID());
-
 		if (login.size() != 0) {
 			System.out.println("Login Success");
+			
+			listLogin.add(login.get(0).getUsername());
+			listLogin.add(login.get(0).getPassword());
+			listLogin.add(login.get(0).getPerson().getTitle());
+			listLogin.add(login.get(0).getPerson().getFirstName());
+			listLogin.add(login.get(0).getPerson().getLastName());
+			listLogin.add("" + login.get(0).getPerson().getPersonID());
+
 			long personID = login.get(0).getPerson().getPersonID();
 
 			String typePerson = mng.checkPersonTeacher(personID);
@@ -94,13 +95,13 @@ public class LoginController {
 		Map<String, List<String>> invalid = new HashMap<String, List<String>>();
 		return invalid;
 	}
-	
-	public String compareSubjectToEnglish (String sub) {
+
+	public String compareSubjectToEnglish(String sub) {
 		String subject = "";
 		List<Topic> listSubject = tm.getAllTopic();
-		System.out.println("compared! "+listSubject.size());
-		for(Topic t:listSubject){
-			if(t.getSubject().getSubjectNumber().equalsIgnoreCase(sub)){
+		System.out.println("compared! " + listSubject.size());
+		for (Topic t : listSubject) {
+			if (t.getSubject().getSubjectNumber().equalsIgnoreCase(sub)) {
 				subject = t.getTopicName();
 				System.out.println("compared!");
 				break;

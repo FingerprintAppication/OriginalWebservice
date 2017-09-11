@@ -64,6 +64,7 @@ public class AnnouceNewsController {
 		List<Schedule> list = mng.searchScheduleDate(periodID);
 
 		List<String> listDate = new ArrayList<>();
+
 		for (Schedule i : list) {
 			String[] sp = i.getScheduleDate().toString().split(" ");
 			try {
@@ -78,6 +79,7 @@ public class AnnouceNewsController {
 			}
 
 		}
+
 		return listDate;
 	}
 
@@ -110,17 +112,22 @@ public class AnnouceNewsController {
 		annouceNews.setTeacher(teacher);
 
 		Calendar now = Calendar.getInstance();
-		now.set(Calendar.HOUR_OF_DAY, 0);  
-		now.set(Calendar.MINUTE, 0);  
-		now.set(Calendar.SECOND, 0);  
-		now.set(Calendar.MILLISECOND, 0);  
+		now.set(Calendar.HOUR_OF_DAY, 0);
+		now.set(Calendar.MINUTE, 0);
+		now.set(Calendar.SECOND, 0);
+		now.set(Calendar.MILLISECOND, 0);
 		annouceNews.setAnnouceDate(now.getTime());
-		
-		Section section = mng.searchSectionByPeriod(annouceNews.getSchedule().getPeriod().getPeriodID());
 
-		System.out.println(section.getSubject().getSubjectNumber() + " " + section.getSubject().getSubjectName());
+		List<AnnouceNews> listAnnouce = new ArrayList<>();
+
+		for (AnnouceNews i : listAnnouce) {
+			if (i.getAnnouceDate().before(new Date())) {
+				System.out.println("expire annouce" + mng.deleteAnnouceNews(i));
+			}
+		}
+
+		Section section = mng.searchSectionByPeriod(annouceNews.getSchedule().getPeriod().getPeriodID());
 		String result = mng.insertAnnouceNews(annouceNews);
-		System.out.println("Result // " + result);
 
 		if (result.equals("insert success")) {
 			String topicName = compareSubjectToEnglish(section.getSubject().getSubjectNumber());
@@ -129,11 +136,13 @@ public class AnnouceNewsController {
 			setJSONData(topicName,
 					section.getSubject().getSubjectNumber() + " " + section.getSubject().getSubjectName(),
 					"ผู้ประกาศข่าว : " + teacherAnnounce + " \n" + annouceNews.getDetail());
+
 			if (newsType.equals("ยกเลิกคาบเรียน")) {
 				System.out.println("cancel attendance with scheduleID : " + schedule.getScheduleID());
-				List<Attendance> list = mng.SearchAttendanceWithScheduleID(schedule.getScheduleID());
+				List<Attendance> listAttendance = mng.SearchAttendanceWithScheduleID(schedule.getScheduleID());
 				String resultUpdate = "";
-				for (Attendance a : list) {
+
+				for (Attendance a : listAttendance) {
 					a.setStatus("ยกเลิก");
 					resultUpdate = mng.updateAttendance(a);
 				}
@@ -141,10 +150,11 @@ public class AnnouceNewsController {
 				if (resultUpdate.equals("update success")) {
 					return "1";
 				} else {
-					System.out.println(mng.deleteAnnouceNew(annouceNews));
+					System.out.println(mng.deleteAnnouceNews(annouceNews));
 					return "0";
 				}
 			}
+
 			return "1";
 		}
 

@@ -49,14 +49,11 @@ public class ViewListSubjectController {
 
 		JSONObject jsonObject = new JSONObject(j);
 		long personID = jsonObject.getLong("personID");
-		System.out.println("PERSON ID : " + personID);
 
 		List<Student> listStudent = mng.searchParentStudent(personID);
 		for (Student s : listStudent) {
-			System.out.println("Get Student with Parent " + s.getStudentID());
 			s.setFingerprintData(null);
 		}
-		System.out.println("listStudent @@@@" + listStudent.toString());
 
 		return listStudent;
 	}
