@@ -23,28 +23,29 @@ public class ViewAnnounceNews {
 	ViewListSubjectManager vlsm = new ViewListSubjectManager();
 	AnnouceNewsManager anm = new AnnouceNewsManager();
 	SectionManager sm = new SectionManager();
-	
+
 	@RequestMapping(value = "/viewAnnouceNews", method = RequestMethod.GET)
-	public List<AnnouceNews> viewAnnouceNews (@RequestParam(value="studentId") Long id) {
+	public List<AnnouceNews> viewAnnouceNews(@RequestParam(value = "studentId") Long id) {
 		List<AnnouceNews> listAnnouce = new ArrayList<AnnouceNews>();
-		
+
 		List<Subject> list = vlsm.searchStudentSubject(id);
-		Map<String,Subject> map = new HashMap<String,Subject>();
-		for (Subject i : list) map.put(i.getSubjectName(),i);
-		
+		Map<String, Subject> map = new HashMap<String, Subject>();
+		for (Subject i : list)
+			map.put(i.getSubjectName(), i);
+
 		List<AnnouceNews> announce = anm.getAnnounceNews();
-		for(AnnouceNews a:announce){
+		for (AnnouceNews a : announce) {
 			Section s = sm.searchSectionByPeriod(a.getSchedule().getPeriod().getPeriodID());
-			if(map.get(s.getSubject().getSubjectName())!=null){
+			if (map.get(s.getSubject().getSubjectName()) != null) {
 				a.getSchedule().getPeriod().setSection(s);
 				a.getSchedule().setPostpone(null);
 				a.getSchedule().getPeriod().getSection().setPeriodList(null);
 				a.getSchedule().getPeriod().setScheduleList(null);
 				listAnnouce.add(a);
-				
+
 			}
 		}
-		
+		System.out.println("LIST ANANNANAAN " + listAnnouce.get(0).toString());
 		return listAnnouce;
 	}
 }

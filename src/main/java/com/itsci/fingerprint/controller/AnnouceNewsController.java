@@ -118,7 +118,7 @@ public class AnnouceNewsController {
 		now.set(Calendar.MILLISECOND, 0);
 		annouceNews.setAnnouceDate(now.getTime());
 
-		List<AnnouceNews> listAnnouce = new ArrayList<>();
+		List<AnnouceNews> listAnnouce = mng.getAllAnnouceNews();
 
 		for (AnnouceNews i : listAnnouce) {
 			if (i.getAnnouceDate().before(new Date())) {
@@ -150,7 +150,7 @@ public class AnnouceNewsController {
 				if (resultUpdate.equals("update success")) {
 					return "1";
 				} else {
-					System.out.println(mng.deleteAnnouceNews(annouceNews));
+					System.out.println("can't update " + mng.deleteAnnouceNews(annouceNews));
 					return "0";
 				}
 			}
