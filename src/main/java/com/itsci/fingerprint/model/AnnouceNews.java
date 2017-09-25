@@ -11,8 +11,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 @Entity
 @Table(name = "annoucenews")
+@JsonAutoDetect
 public class AnnouceNews {
 	private static final long serialVersionUID = 1L;
 	private long annouceNewsID;
@@ -31,6 +36,8 @@ public class AnnouceNews {
 		this.detail = detail;
 	}
 
+	@JsonSerialize(using=JsonDateSerializer.class)
+	@JsonDeserialize(using=CustomerDateAndTimeDeserialize .class)
 	public Date getAnnouceDate() {
 		return annouceDate;
 	}
@@ -89,7 +96,7 @@ public class AnnouceNews {
 
 	@Override
 	public String toString() {
-		return "AnnouceNews [annouceNewsID=" + annouceNewsID + ", annouceNewsType=" + annouceNewsType + ", detail="
+		return "DATE "+annouceDate+" AnnouceNews [annouceNewsID=" + annouceNewsID + ", annouceNewsType=" + annouceNewsType + ", detail="
 				+ detail + ", teacher=" + teacher + ", schedule=" + schedule + "]";
 	}
 

@@ -45,13 +45,19 @@ public class ViewInformLeaveController {
 	@RequestMapping(value="/informleave",method = RequestMethod.POST)
 	public String getInformLeave (@RequestBody InformLeave inform) throws IOException {
 		/********* GET DATE TO CALENDAR *********/
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(inform.getSchedule().getScheduleDate());
-		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH) + 1;
-		int day = cal.get(Calendar.DAY_OF_MONTH);
-		String date = year  + "-" + month + "-" + day;
-		System.out.println("date " + date);
+		int year = inform.getSchedule().getScheduleDate().getYear();
+		System.out.println("yearss " + year);
+		/*if(inform){
+			
+		}*/
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String date = formatter.format(inform.getSchedule().getScheduleDate());
+		String splitDate[] =  date.split("-");
+		Calendar calen = Calendar.getInstance();
+		if(Integer.parseInt(splitDate[0]) > 2559){
+			date = (Integer.parseInt(splitDate[0])-543)+"-"+splitDate[1]+"-"+splitDate[2];
+		}
+		System.out.println("after deSerilaized " + date);
 		
 	    /*********DECLARE VARIABLE FOR SEARCH*********/
 	    Long getStudentId = inform.getStudent().getStudentID();

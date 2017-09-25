@@ -27,7 +27,7 @@ public class ViewAnnounceNews {
 	@RequestMapping(value = "/viewAnnouceNews", method = RequestMethod.GET)
 	public List<AnnouceNews> viewAnnouceNews (@RequestParam(value="studentId") Long id) {
 		List<AnnouceNews> listAnnouce = new ArrayList<AnnouceNews>();
-		
+		System.out.println(id+"");
 		List<Subject> list = vlsm.searchStudentSubject(id);
 		Map<String,Subject> map = new HashMap<String,Subject>();
 		for (Subject i : list) map.put(i.getSubjectName(),i);
@@ -40,11 +40,12 @@ public class ViewAnnounceNews {
 				a.getSchedule().setPostpone(null);
 				a.getSchedule().getPeriod().getSection().setPeriodList(null);
 				a.getSchedule().getPeriod().setScheduleList(null);
+				
 				listAnnouce.add(a);
 				
 			}
 		}
-		
+		System.out.println("test list "+listAnnouce.get(0).getSchedule().getScheduleDate());
 		return listAnnouce;
 	}
 }

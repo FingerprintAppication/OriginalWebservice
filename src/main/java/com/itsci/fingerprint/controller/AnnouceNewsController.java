@@ -57,6 +57,8 @@ public class AnnouceNewsController {
 		long periodID = json.getLong("periodID");
 
 		Date d = new Date();
+		//Here set date when finish term
+		d.setMonth(7);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
 		String today = sdf.format(d);
 		System.out.println("TODAY " + today);
@@ -96,13 +98,14 @@ public class AnnouceNewsController {
 
 		JSONObject jsonSchedule = json.getJSONObject("schedule");
 		String selectedDate = jsonSchedule.getString("scheduleDate");
-		String[] sp = selectedDate.split("-");
+		/*String[] sp = selectedDate.split("-");
 		String newDate = sp[2] + "-" + sp[1] + "-" + sp[0] + " 00:00:00.0";
-
+		System.out.println("newDate "+newDate);
+		System.out.println("from schedule "+selectedDate);*/
 		JSONObject jsonPeriod = jsonSchedule.getJSONObject("period");
 		long periodID = jsonPeriod.getLong("periodID");
 
-		Schedule schedule = mng.searchSchedule(periodID, newDate);
+		Schedule schedule = mng.searchSchedule(periodID, selectedDate);
 		Teacher teacher = mng.searchTeacher(personID);
 
 		AnnouceNews annouceNews = new AnnouceNews();
@@ -165,7 +168,7 @@ public class AnnouceNewsController {
 	@RequestMapping(value = "/FCM", method = RequestMethod.GET)
 	public String testPostFCM() {
 		// return compareSubjectToEnglish("ทส341");
-		return setJSONData("Special_Topic_IN_Information_Technology", "ขลำคีย์ผิด วุ้ววว",
+		return setJSONData("Special_Topic_IN_Information_Technology", "ทดสอบ FCM real mobiles",
 				"Hello firebase cloud messaging!") + "";
 	}
 

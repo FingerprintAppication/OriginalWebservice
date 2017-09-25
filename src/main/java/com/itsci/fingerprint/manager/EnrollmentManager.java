@@ -8,6 +8,8 @@ import org.hibernate.SessionFactory;
 import com.itsci.fingerprint.model.Attendance;
 import com.itsci.fingerprint.model.Enrollment;
 import com.itsci.fingerprint.model.Period;
+import com.itsci.fingerprint.model.Section;
+
 import demo.HibernateConnection;
 
 public class EnrollmentManager {
@@ -50,6 +52,7 @@ public class EnrollmentManager {
 			s.getStackTrace();
 
 		}
+		System.out.println("getHibernateEnrollment "+enrollment.getAttendanceList().size());
 		return enrollment;
 	}
 	
@@ -81,6 +84,36 @@ public class EnrollmentManager {
 		}
 		return list;
 	}
+	
+	public List<Enrollment> getAllEnrollmentByPersonID (String personID) {
+		List<Enrollment> list = null;
+		try {
+			SessionFactory sessionFactory = HibernateConnection.doHibernateConnection();
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			list = session.createQuery("From Enrollment en where en.student.personID="+personID).list();
+			/*for(int y=0;y<list.size();y++){
+				Collection<Period> afterFilterAttendance = filterCollectionLong(
+						list.get(y).getSection().getPeriodList(),
+						session,"this.section.sectionID=:sectionID",
+						"sectionID", list.get(y).getSection().getSectionID()+"");
+				list.get(y).getSection().getPeriodList().clear();
+				list.get(y).getSection().getPeriodList().addAll(afterFilterAttendance);
+
+			}
+			*/
+			session.getTransaction().commit();
+			session.close();
+			System.out.println("GET IN COMPLETED Section");
+
+		} catch (Exception s) {
+			s.getStackTrace();
+
+		}
+		return list;
+	}
+	
+	
 	
 	private static <T> Collection<T> filterCollectionLong(
 			Collection<T> collection, Session s, String filterString,
