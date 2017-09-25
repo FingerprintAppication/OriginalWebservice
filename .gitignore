@@ -39,7 +39,11 @@ src/main/java/demo/HibernateConnection.java
 src/main/java/demo/HibernateConnection.java
 src/main/java/demo/HibernateConnection.java
 src/main/java/demo/HibernateConnection.java
+<<<<<<< HEAD
 src/main/java/com/itsci/fingerprint/controller/ViewAnnounceNews.java
 src/main/java/com/itsci/fingerprint/controller/AnnouceNewsController.java
 src/main/java/com/itsci/fingerprint/controller/ViewInformLeaveController.java
 src/main/java/com/itsci/fingerprint/controller/ViewAnnounceNews.java
+=======
+src/main/java/demo/HibernateConnection.java
+>>>>>>> a1441c726f7319787fe9afd2ed2feee61db27e7a

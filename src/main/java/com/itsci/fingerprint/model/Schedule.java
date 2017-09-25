@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 @Entity
 @Table(name = "schedule")
 
@@ -66,6 +69,8 @@ public class Schedule implements Serializable {
 		this.scheduleNumber = scheduleNumber;
 	}
 
+	@JsonSerialize(using=JsonDateSerializer.class)
+	@JsonDeserialize(using=CustomerDateAndTimeDeserialize .class)
 	public Date getScheduleDate() {
 		return scheduleDate;
 	}

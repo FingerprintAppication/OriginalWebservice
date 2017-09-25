@@ -45,6 +45,7 @@ public class ViewInformLeaveController {
 	@RequestMapping(value = "/informleave", method = RequestMethod.POST)
 	public String getInformLeave(@RequestBody InformLeave inform) throws IOException {
 		/********* GET DATE TO CALENDAR *********/
+<<<<<<< HEAD
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(inform.getSchedule().getScheduleDate());
 		int year = cal.get(Calendar.YEAR);
@@ -56,6 +57,25 @@ public class ViewInformLeaveController {
 		/********* DECLARE VARIABLE FOR SEARCH *********/
 		Long getStudentId = inform.getStudent().getStudentID();
 		Long getPeriodId = inform.getSchedule().getPeriod().getPeriodID();
+=======
+		int year = inform.getSchedule().getScheduleDate().getYear();
+		System.out.println("yearss " + year);
+		/*if(inform){
+			
+		}*/
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String date = formatter.format(inform.getSchedule().getScheduleDate());
+		String splitDate[] =  date.split("-");
+		Calendar calen = Calendar.getInstance();
+		if(Integer.parseInt(splitDate[0]) > 2559){
+			date = (Integer.parseInt(splitDate[0])-543)+"-"+splitDate[1]+"-"+splitDate[2];
+		}
+		System.out.println("after deSerilaized " + date);
+		
+	    /*********DECLARE VARIABLE FOR SEARCH*********/
+	    Long getStudentId = inform.getStudent().getStudentID();
+	    Long getPeriodId = inform.getSchedule().getPeriod().getPeriodID();
+>>>>>>> a1441c726f7319787fe9afd2ed2feee61db27e7a
 		Student student = stm.searchStudent(getStudentId);
 		Schedule scc = scm.searchScheduleByDate(date, getPeriodId);
 		Section section = sm.searchSectionByPeriod(getPeriodId);
